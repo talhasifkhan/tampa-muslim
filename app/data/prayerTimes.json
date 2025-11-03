@@ -1,0 +1,14 @@
+{
+  "statusCode": 200,
+  "body": {
+    "masjids": {
+      "brandonMasjid": {
+        "Fajr": "06:50 AM",
+        "Dhuhr": "02:00 PM",
+        "Asr": "05:15 PM",
+        "Maghrib": "10 Min After Sunset",
+        "Isha": "08:15 PM"
+      }
+    }
+  }
+}
