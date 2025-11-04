@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig({
-  base: "/tampa-muslim/", // TODO: remove on full deployment
+export default defineConfig(({ command }) => ({
+  base: command === "build" ? "/tampa-muslim/" : "/",
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
-});
+}));
