@@ -4,5 +4,6 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
+  base: "/tampa-muslim/", // TODO: remove on full deployment
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
 });
