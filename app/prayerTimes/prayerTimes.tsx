@@ -1,9 +1,8 @@
 import { useMemo, useState, useEffect } from "react";
 
-
 type PrayerName = "Fajr" | "Dhuhr" | "Asr" | "Maghrib" | "Isha" | "Jumuah";
 
-type Masjid = {
+export type Masjid = {
   id: string;
   name: string;
   address: string;
@@ -11,85 +10,51 @@ type Masjid = {
   website: string;
   multipleKhutbahs: boolean;
   jumuahTimes?: string[];
+  lastUpdated?: string;
 };
 
-const MASJIDS: Masjid[] = [
+const STATIC_MASJID_INFO = [
   {
     id: "istaba",
     name: "Islamic Society of Tampa Bay Area (ISTABA)",
     address: "7326 E. Sligh Ave, Tampa, FL",
-    iqamahTimes: {
-      Fajr: "5:45 AM",
-      Dhuhr: "1:30 PM",
-      Asr: "5:00 PM",
-      Maghrib: "Sunset",
-      Isha: "8:30 PM",
-      Jumuah: "12:30 PM"
-    },
     website: "https://www.istaba.org/",
-    multipleKhutbahs: true,
-    jumuahTimes: ["12:30 PM", "1:40 PM"],
   },
   {
     id: "isonet",
-    name: "Islamic Society of New Tampa (ISONET) ",
+    name: "Islamic Society of New Tampa (ISONET)",
     address: "15830 Morris Bridge Rd, Tampa, FL",
-    iqamahTimes: {
-      Fajr: "6:00 AM",
-      Dhuhr: "1:35 PM",
-      Asr: "4:55 PM",
-      Maghrib: "Sunset",
-      Isha: "8:45 PM",
-      Jumuah: "1:30 PM"
-    },
     website: "https://www.isonet.org/",
-    multipleKhutbahs: true,
-    jumuahTimes: ["1:30 PM", "2:45 PM"],
   },
   {
     id: "qassam",
     name: "Masjid Al-Qassam (ICT)",
     address: "6406 N 56th St, Tampa, FL",
-    iqamahTimes: {
-      Fajr: "5:50 AM",
-      Dhuhr: "1:25 PM",
-      Asr: "5:05 PM",
-      Maghrib: "Sunset",
-      Isha: "8:35 PM",
-      Jumuah: "1:40 PM"
-    },
     website: "https://ictampa.org/",
-    multipleKhutbahs: false,
-    jumuahTimes: ["1:40 PM"],
   },
-    {
+  {
     id: "brndon",
     name: "Islamic Center of Brandon",
     address: "1006 Victoria Street. Brandon, FL 33510",
-    iqamahTimes: {
-      Fajr: "5:50 AM",
-      Dhuhr: "1:25 PM",
-      Asr: "5:05 PM",
-      Maghrib: "Sunset",
-      Isha: "8:35 PM",
-      Jumuah: "1:40 PM"
-    },
     website: "https://www.brandonmasjid.org/",
-    multipleKhutbahs: false,
-    jumuahTimes: ["1:40 PM"],
   },
+  {
+    id: "tmc",
+    name: "The Muslim Connection (TMC)",
+    address: "8080 N 56th St, Tampa, FL 33617",
+    website: "https://themuslimconnection.com/",
+  }
 ];
 
 const PRAYER_ORDER: PrayerName[] = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha", "Jumuah"];
 
-export function PrayerTimes() {
+export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
   const [selectedMasjidId, setSelectedMasjidId] = useState<string>("");
   const [activeTab, setActiveTab] = useState<"prayers" | "events" | "about">("prayers");
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(() => {
     if (typeof window === "undefined") {
       return false;
     }
-
     return window.innerWidth >= 1024;
   });
 
@@ -116,9 +81,38 @@ export function PrayerTimes() {
     }
   };
 
+  const masjidsData = useMemo(() => {
+    return STATIC_MASJID_INFO.map((info) => {
+      const csvRow = csvData.find((row) => row.masjid_name?.trim() === info.name.trim());
+      
+      const iqamahTimes: Record<PrayerName, string> = {
+        Fajr: csvRow?.Fajr || "-",
+        Dhuhr: csvRow?.Dhuhr || "-",
+        Asr: csvRow?.Asr || "-",
+        Maghrib: csvRow?.Maghrib || "-",
+        Isha: csvRow?.Isha || "-",
+        Jumuah: csvRow?.Jumuah || "-"
+      };
+      
+      const jumuahTimesRaw = csvRow?.Jumuah || "";
+      let jumuahTimesArray: string[] = [];
+      if (jumuahTimesRaw && jumuahTimesRaw !== "-") {
+        jumuahTimesArray = jumuahTimesRaw.split(",").map((s: string) => s.trim());
+      }
+      
+      return {
+        ...info,
+        iqamahTimes,
+        multipleKhutbahs: jumuahTimesArray.length > 1,
+        jumuahTimes: jumuahTimesArray,
+        lastUpdated: csvRow?.last_updated || ""
+      } as Masjid;
+    });
+  }, [csvData]);
+
   const selectedMasjid = useMemo(
-    () => MASJIDS.find((masjid) => masjid.id === selectedMasjidId),
-    [selectedMasjidId],
+    () => masjidsData.find((masjid) => masjid.id === selectedMasjidId),
+    [selectedMasjidId, masjidsData],
   );
 
   const headingTitle =
@@ -202,7 +196,7 @@ export function PrayerTimes() {
                   <option value="" disabled>
                     Choose a masjid...
                   </option>
-                  {MASJIDS.map((masjid) => (
+                  {masjidsData.map((masjid) => (
                     <option key={masjid.id} value={masjid.id}>
                       {masjid.name}
                     </option>
@@ -256,6 +250,20 @@ export function PrayerTimes() {
                           </div>
                         ))
                       : null}
+                  </div>
+                  
+                  <div style={{ marginTop: "1rem", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem", fontSize: "0.85rem", color: "#666" }}>
+                    <span>
+                      {selectedMasjid.lastUpdated && `Last updated: ${selectedMasjid.lastUpdated}`}
+                    </span>
+                    <a 
+                      href="https://docs.google.com/forms/d/e/1FAIpQLSfakgO9s0pIemEJJvdgs_zw_xcTZa8dmFrwOTE0a6FMP995bQ/viewform?usp=dialog" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      style={{ color: "#2563eb", textDecoration: "underline", textUnderlineOffset: "2px" }}
+                    >
+                      Notice incorrect times? Update here
+                    </a>
                   </div>
 
                   <div className="prayer-actions">
