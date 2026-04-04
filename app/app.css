@@ -304,9 +304,10 @@ body {
 .prayer-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 0.65rem 0; /* much tighter vertical space to eliminate scrolling */
   border-bottom: 1px solid #e2e8f0;
+  gap: 1rem;
 }
 
 .prayer-row:last-child {
@@ -318,12 +319,16 @@ body {
   font-size: 1.05rem;
   font-weight: 500;
   color: #1e293b;
+  flex-shrink: 0;
+  padding-top: 0.15rem;
 }
 
 .prayer-row__time {
   font-size: 1.05rem;
   font-weight: 300;
   color: #475569;
+  text-align: right;
+  line-height: 1.3;
 }
 
 /* ── Meta & Actions ── */

@@ -30,7 +30,7 @@ const STATIC_MASJID_INFO = [
     address: "15830 Morris Bridge Rd, Tampa, FL",
     lat: 28.0742,
     lng: -82.3471,
-    website: "https://www.isonet.org/",
+    website: "https://ISONET.org/",
   },
   {
     id: "qassam",
@@ -145,6 +145,7 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
       const csvRow = csvData.find(
         (row) => row.masjid_name?.trim() === info.name.trim()
       );
+      
       const iqamahTimes: Record<PrayerName, string> = {
         Fajr: csvRow?.Fajr || "-",
         Dhuhr: csvRow?.Dhuhr || "-",
