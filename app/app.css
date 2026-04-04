@@ -375,11 +375,27 @@ body {
   border: 1px solid #0f172a;
   background: #0f172a;
   color: white;
+  transition: all 0.15s ease;
 }
 
 .action-btn--secondary {
   background: white;
   color: #0f172a;
+}
+
+.action-btn--navigate {
+  background: #10b981;
+  border-color: #10b981;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.action-btn--navigate:hover {
+  background: #059669;
+  border-color: #059669;
 }
 
 .empty-state {

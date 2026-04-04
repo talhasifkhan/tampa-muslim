@@ -56,6 +56,22 @@ const STATIC_MASJID_INFO = [
     lng: -82.3936,
     website: "https://themuslimconnection.com/",
   },
+  {
+    id: "alrahma",
+    name: "Masjid Al-Rahma",
+    address: "9844 Skewlee Rd, Thonotosassa, FL 33592",
+    lat: 28.0550,
+    lng: -82.2850,
+    website: "https://alrahmamasjid.org/",
+  },
+  {
+    id: "jsmc",
+    name: "Jesus Son of Mary Center (JSMC)",
+    address: "3457 W Kenyon Ave, Tampa, FL 33614",
+    lat: 28.0260,
+    lng: -82.4980,
+    website: "https://jsmctampa.org/",
+  },
 ];
 
 const PRAYER_ORDER: PrayerName[] = [
@@ -137,13 +153,18 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
         Isha: csvRow?.Isha || "-",
         Jumuah: csvRow?.Jumuah || "-",
       };
+      
       const jumuahTimesRaw = csvRow?.Jumuah || "";
       let jumuahTimesArray: string[] = [];
       if (jumuahTimesRaw && jumuahTimesRaw !== "-") {
-        jumuahTimesArray = jumuahTimesRaw
-          .split(",")
-          .map((s: string) => s.trim());
+        jumuahTimesArray.push(jumuahTimesRaw.trim());
       }
+      
+      const jumuah2Raw = csvRow?.["Jumuah 2"];
+      if (jumuah2Raw && jumuah2Raw !== "-") {
+        jumuahTimesArray.push(jumuah2Raw.trim());
+      }
+
       return {
         ...info,
         iqamahTimes,
@@ -522,7 +543,7 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
 
                 <div className="action-buttons">
                   <a
-                    className="action-btn"
+                    className="action-btn action-btn--secondary"
                     href={selectedMasjid.website}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -530,12 +551,12 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
                     Visit Website
                   </a>
                   <a
-                    className="action-btn action-btn--secondary"
+                    className="action-btn action-btn--navigate"
                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedMasjid.address)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Open in Maps
+                    🧭 Navigate
                   </a>
                 </div>
               </div>
