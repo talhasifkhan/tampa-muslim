@@ -98,7 +98,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem; /* Tightened gap */
-  margin-bottom: 1.25rem; /* Tightened margin */
+  margin-bottom: 0.5rem;
 }
 
 .masjid-picker__row {
@@ -277,7 +277,7 @@ body {
 }
 
 .prayer-view__header {
-  margin-bottom: 1rem; /* tightened */
+  margin-bottom: 0.4rem;
 }
 
 .masjid-name {
@@ -305,7 +305,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 0.65rem 0; /* much tighter vertical space to eliminate scrolling */
+  padding: 0.45rem 0;
   border-bottom: 1px solid #e2e8f0;
   gap: 1rem;
 }
@@ -335,8 +335,8 @@ body {
 .meta-info {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
-  padding-top: 1.25rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
   border-top: 1px solid #e2e8f0;
 }
 
@@ -366,7 +366,7 @@ body {
 .action-buttons {
   display: flex;
   gap: 0.75rem;
-  margin-top: 1rem; /* tightened */
+  margin-top: 0.5rem;
 }
 
 .action-btn {
@@ -448,6 +448,195 @@ body {
 
 .nav-tab--active {
   color: #10b981; /* emerald active state */
+}
+
+/* ── Restaurant Directory ── */
+.restaurant-view {
+  display: flex;
+  flex-direction: column;
+}
+
+.restaurant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.restaurant-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.restaurant-card__image-container {
+  width: 100%;
+  height: 140px;
+  background: #f1f5f9;
+}
+
+.restaurant-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.restaurant-card__content {
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.restaurant-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.restaurant-card__name {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.restaurant-card__cuisine {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #10b981;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.restaurant-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.25rem;
+}
+
+.restaurant-card__address {
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.restaurant-card__distance {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #059669;
+}
+
+.restaurant-card__actions {
+  display: flex;
+  margin-top: 0.25rem;
+}
+
+.restaurant-card__actions .action-btn {
+  padding: 0.6rem 0.75rem;
+  font-size: 0.85rem;
+  border-radius: 8px;
+}
+
+/* ── Events ── */
+.event-view {
+  overflow-y: auto;
+}
+
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.event-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.event-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.event-card__category {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.event-card__category--lecture  { background: #eff6ff; color: #2563eb; }
+.event-card__category--fundraiser { background: #fef3c7; color: #d97706; }
+.event-card__category--social   { background: #f0fdf4; color: #059669; }
+.event-card__category--youth    { background: #fdf4ff; color: #9333ea; }
+.event-card__category--class    { background: #fff7ed; color: #ea580c; }
+
+.event-card__title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.event-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.event-card__meta-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.83rem;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.event-card__meta-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  color: #94a3b8;
+}
+
+.event-card__description {
+  font-size: 0.83rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* ── Hide section title on mobile when masjid is selected ── */
+@media (max-width: 767px) {
+  .section-title--hidden-mobile {
+    display: none;
+  }
 }
 
 /* ── Media Queries for Desktop ── */

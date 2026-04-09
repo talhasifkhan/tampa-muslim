@@ -30,7 +30,7 @@ const STATIC_MASJID_INFO = [
     address: "15830 Morris Bridge Rd, Tampa, FL",
     lat: 28.0742,
     lng: -82.3471,
-    website: "https://ISONET.org/",
+    website: "https://www.newtampamasjid.org/",
   },
   {
     id: "qassam",
@@ -74,6 +74,141 @@ const STATIC_MASJID_INFO = [
   },
 ];
 
+/* ────────── Static Restaurant Data ────────── */
+export type Restaurant = {
+  id: string;
+  name: string;
+  cuisine: string;
+  address: string;
+  lat: number;
+  lng: number;
+  image: string;
+};
+
+const STATIC_RESTAURANT_INFO: Restaurant[] = [
+  {
+    id: "mezza",
+    name: "Mezza Mediterranean Grill",
+    cuisine: "Mediterranean",
+    address: "1780 E Fowler Ave, Tampa, FL 33612",
+    lat: 28.0551,
+    lng: -82.4418,
+    image: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: "salems",
+    name: "Salem's Fresh Eats",
+    cuisine: "Fast Food",
+    address: "8008 E Hillsborough Ave, Tampa, FL 33610",
+    lat: 27.9960,
+    lng: -82.3550,
+    image: "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: "taaza",
+    name: "Taaza Mart & Grill",
+    cuisine: "Indian / Pakistani",
+    address: "2608 E Fowler Ave, Tampa, FL 33612",
+    lat: 28.0550,
+    lng: -82.4300,
+    image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: "petras",
+    name: "Petra Restaurant",
+    cuisine: "Middle Eastern",
+    address: "1118 W Kennedy Blvd, Tampa, FL 33606",
+    lat: 27.9450,
+    lng: -82.4720,
+    image: "https://images.unsplash.com/photo-1529144415895-6aaf8be872fb?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: "mezbaan",
+    name: "Mezbaan Indian Restaurant",
+    cuisine: "Indian / Pakistani",
+    address: "11627 N 56th St, Temple Terrace, FL 33617",
+    lat: 28.0555,
+    lng: -82.3934,
+    image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=600&auto=format&fit=crop",
+  }
+];
+
+/* ────────── Static Events Data ────────── */
+type CommunityEvent = {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+  description: string;
+  category: "lecture" | "fundraiser" | "social" | "youth" | "class";
+};
+
+const STATIC_EVENTS: CommunityEvent[] = [
+  {
+    id: "halaqa-apr",
+    title: "Weekly Halaqa & Qur'an Study",
+    date: "Every Sunday",
+    time: "After Fajr",
+    location: "ISTABA — 7326 E. Sligh Ave, Tampa",
+    description: "Join us for a weekly circle of Qur'an recitation and reflection. All levels welcome.",
+    category: "class",
+  },
+  {
+    id: "youth-basketball",
+    title: "Muslim Youth Basketball League",
+    date: "Saturdays, Apr 12 – May 31",
+    time: "10:00 AM – 12:00 PM",
+    location: "ISONET Gym — 15830 Morris Bridge Rd, Tampa",
+    description: "Weekly co-ed basketball for ages 10–18. Registration required. Contact ISONET for details.",
+    category: "youth",
+  },
+  {
+    id: "masjid-fundraiser",
+    title: "ISTABA Annual Fundraiser Dinner",
+    date: "Saturday, Apr 19",
+    time: "6:30 PM",
+    location: "ISTABA Banquet Hall — 7326 E. Sligh Ave, Tampa",
+    description: "Support your masjid at our annual fundraising dinner. Live auction, guest speakers, and catered dinner included.",
+    category: "fundraiser",
+  },
+  {
+    id: "jumuah-lecture",
+    title: "Friday Khutbah: Strengthening Family Bonds",
+    date: "Friday, Apr 25",
+    time: "1:15 PM",
+    location: "Masjid Al-Qassam — 6406 N 56th St, Tampa",
+    description: "Guest speaker Sh. Omar Suleiman will deliver the Friday khutbah on building stronger Muslim families.",
+    category: "lecture",
+  },
+  {
+    id: "community-iftar",
+    title: "Community Iftar & Networking Night",
+    date: "Saturday, May 3",
+    time: "Maghrib (approx. 7:45 PM)",
+    location: "The Muslim Connection — 8080 N 56th St, Tampa",
+    description: "Break bread with your neighbors. Open to all. Bring a dish to share if you can!",
+    category: "social",
+  },
+  {
+    id: "new-muslim",
+    title: "New Muslim Support Group",
+    date: "Every 2nd & 4th Wednesday",
+    time: "7:00 PM",
+    location: "Islamic Center of Brandon — 1006 Victoria St, Brandon",
+    description: "A welcoming space for new Muslims to ask questions, connect, and learn at their own pace.",
+    category: "class",
+  },
+];
+
+const EVENT_CATEGORY_LABELS: Record<CommunityEvent["category"], string> = {
+  lecture: "Lecture",
+  fundraiser: "Fundraiser",
+  social: "Community",
+  youth: "Youth",
+  class: "Class / Study",
+};
+
 const PRAYER_ORDER: PrayerName[] = [
   "Fajr",
   "Dhuhr",
@@ -103,7 +238,7 @@ function haversineDistance(
 /* ────────── Component ────────── */
 export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
   const [selectedMasjidId, setSelectedMasjidId] = useState<string>("");
-  const [activeTab, setActiveTab] = useState<"prayers" | "events" | "about">(
+  const [activeTab, setActiveTab] = useState<"prayers" | "restaurants" | "events" | "about">(
     "prayers"
   );
 
@@ -120,6 +255,58 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
     "idle" | "loading" | "found" | "denied" | "unavailable"
   >("idle");
   const [closestDistance, setClosestDistance] = useState<number | null>(null);
+
+  /* ── restaurant state ── */
+  const [restaurantSearchQuery, setRestaurantSearchQuery] = useState("");
+  const [restaurantLocateStatus, setRestaurantLocateStatus] = useState<"idle" | "loading" | "found" | "denied" | "unavailable">("idle");
+  const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null);
+
+  // Memoized restaurant list
+  const filteredRestaurants = useMemo(() => {
+    let list = [...STATIC_RESTAURANT_INFO];
+    
+    if (restaurantSearchQuery.trim()) {
+      const q = restaurantSearchQuery.toLowerCase();
+      list = list.filter(r => r.name.toLowerCase().includes(q) || r.cuisine.toLowerCase().includes(q));
+    }
+
+    if (userLocation) {
+      // sort by distance
+      list.sort((a, b) => {
+        const distA = haversineDistance(userLocation.lat, userLocation.lng, a.lat, a.lng);
+        const distB = haversineDistance(userLocation.lat, userLocation.lng, b.lat, b.lng);
+        return distA - distB;
+      });
+    } else {
+      // sort alphabetical
+      list.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    return list;
+  }, [restaurantSearchQuery, userLocation]);
+
+  const handleRestaurantFindClosest = useCallback(() => {
+    if (!navigator.geolocation) {
+      setRestaurantLocateStatus("unavailable");
+      return;
+    }
+    setRestaurantLocateStatus("loading");
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setRestaurantLocateStatus("found");
+      },
+      (err) => {
+        if (err.code === err.PERMISSION_DENIED) {
+          setRestaurantLocateStatus("denied");
+        } else {
+          setRestaurantLocateStatus("unavailable");
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }, []);
 
   /* ── click-outside to close dropdown ── */
   useEffect(() => {
@@ -145,7 +332,7 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
       const csvRow = csvData.find(
         (row) => row.masjid_name?.trim() === info.name.trim()
       );
-      
+
       const iqamahTimes: Record<PrayerName, string> = {
         Fajr: csvRow?.Fajr || "-",
         Dhuhr: csvRow?.Dhuhr || "-",
@@ -154,13 +341,13 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
         Isha: csvRow?.Isha || "-",
         Jumuah: csvRow?.Jumuah || "-",
       };
-      
+
       const jumuahTimesRaw = csvRow?.Jumuah || "";
       let jumuahTimesArray: string[] = [];
       if (jumuahTimesRaw && jumuahTimesRaw !== "-") {
         jumuahTimesArray.push(jumuahTimesRaw.trim());
       }
-      
+
       const jumuah2Raw = csvRow?.["Jumuah 2"];
       if (jumuah2Raw && jumuah2Raw !== "-") {
         jumuahTimesArray.push(jumuah2Raw.trim());
@@ -200,6 +387,7 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
       setHighlightedIndex(-1);
       setClosestDistance(null);
       setLocateStatus("idle");
+      inputRef.current?.blur(); // dismiss keyboard on mobile
     },
     []
   );
@@ -298,6 +486,8 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
   const headingTitle =
     activeTab === "prayers"
       ? "Prayer Times"
+      : activeTab === "restaurants"
+        ? "Halal Restaurants"
       : activeTab === "events"
         ? "Community Events"
         : "About TampaMuslim";
@@ -307,7 +497,7 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
       {/* ── Top Header ── */}
       <header className="header-top">
         <h1 className="header-brand">TampaMuslim.com</h1>
-        
+
         {/* Desktop Navigation (hidden on mobile) */}
         <nav className="desktop-nav">
           <button
@@ -315,6 +505,12 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
             onClick={() => setActiveTab("prayers")}
           >
             Prayer Times
+          </button>
+          <button
+            className={`desktop-nav__tab ${activeTab === "restaurants" ? "desktop-nav__tab--active" : ""}`}
+            onClick={() => setActiveTab("restaurants")}
+          >
+            Restaurants
           </button>
           <button
             className={`desktop-nav__tab ${activeTab === "events" ? "desktop-nav__tab--active" : ""}`}
@@ -333,7 +529,7 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
 
       {/* ── Main Content Area ── */}
       <main className="main-content">
-        <h2 className="section-title">{headingTitle}</h2>
+        <h2 className={`section-title${activeTab === "prayers" && selectedMasjid ? " section-title--hidden-mobile" : ""}`}>{headingTitle}</h2>
 
         {activeTab === "prayers" && (
           <div className="tab-content">
@@ -510,16 +706,16 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
                   })}
 
                   {selectedMasjid.multipleKhutbahs &&
-                  selectedMasjid.jumuahTimes &&
-                  selectedMasjid.jumuahTimes.length > 1
+                    selectedMasjid.jumuahTimes &&
+                    selectedMasjid.jumuahTimes.length > 1
                     ? selectedMasjid.jumuahTimes.slice(1).map((time, index) => (
-                        <div className="prayer-row" key={`extra-jumuah-${index}`}>
-                          <span className="prayer-row__name">
-                            {`Jumuah ${index + 2}`}
-                          </span>
-                          <span className="prayer-row__time">{time}</span>
-                        </div>
-                      ))
+                      <div className="prayer-row" key={`extra-jumuah-${index}`}>
+                        <span className="prayer-row__name">
+                          {`Jumuah ${index + 2}`}
+                        </span>
+                        <span className="prayer-row__time">{time}</span>
+                      </div>
+                    ))
                     : null}
                 </div>
 
@@ -569,9 +765,151 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
           </div>
         )}
 
+        {activeTab === "restaurants" && (
+          <div className="tab-content restaurant-view">
+            <div className="masjid-picker">
+              <div className="masjid-picker__row">
+                <div className="masjid-search">
+                  <div className="masjid-search__input-wrap">
+                    <svg
+                      className="masjid-search__icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <input
+                      type="text"
+                      className="masjid-search__input"
+                      placeholder="Search name or cuisine..."
+                      value={restaurantSearchQuery}
+                      onChange={(e) => setRestaurantSearchQuery(e.target.value)}
+                    />
+                    {restaurantSearchQuery && (
+                      <button
+                        type="button"
+                        className="masjid-search__clear"
+                        onClick={() => setRestaurantSearchQuery("")}
+                        aria-label="Clear search"
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="masjid-locate-btn"
+                  onClick={handleRestaurantFindClosest}
+                  disabled={restaurantLocateStatus === "loading"}
+                >
+                  {restaurantLocateStatus === "loading" ? (
+                    <span className="masjid-locate-btn__spinner" />
+                  ) : (
+                    <>📍 Closest</>
+                  )}
+                </button>
+              </div>
+
+              {restaurantLocateStatus === "denied" && (
+                <span className="masjid-locate-error">
+                  Location access denied. Please enable location.
+                </span>
+              )}
+              {restaurantLocateStatus === "unavailable" && (
+                <span className="masjid-locate-error">
+                  Location is not available.
+                </span>
+              )}
+            </div>
+
+            <div className="restaurant-list">
+              {filteredRestaurants.length > 0 ? (
+                filteredRestaurants.map(r => {
+                  const dist = userLocation ? haversineDistance(userLocation.lat, userLocation.lng, r.lat, r.lng) : null;
+                  return (
+                    <div key={r.id} className="restaurant-card">
+                      <div className="restaurant-card__image-container">
+                        <img src={r.image} alt={r.name} className="restaurant-card__image" loading="lazy" />
+                      </div>
+                      <div className="restaurant-card__content">
+                        <div className="restaurant-card__info">
+                          <h3 className="restaurant-card__name">{r.name}</h3>
+                          <span className="restaurant-card__cuisine">{r.cuisine}</span>
+                          <div className="restaurant-card__meta">
+                            <span className="restaurant-card__address">{r.address}</span>
+                            {dist !== null && (
+                              <span className="restaurant-card__distance">
+                                📍 {(Math.round(dist * 10) / 10).toFixed(1)} mi
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="restaurant-card__actions">
+                          <a
+                            className="action-btn action-btn--navigate"
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.name + " " + r.address)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            🧭 Navigate
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="empty-state">
+                  <p>No restaurants found.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {activeTab === "events" && (
-          <div className="empty-state">
-            <p>Events coming soon!</p>
+          <div className="tab-content event-view">
+            <div className="event-list">
+              {STATIC_EVENTS.map((event) => (
+                <div key={event.id} className="event-card">
+                  <div className="event-card__header">
+                    <span className={`event-card__category event-card__category--${event.category}`}>
+                      {EVENT_CATEGORY_LABELS[event.category]}
+                    </span>
+                    <h3 className="event-card__title">{event.title}</h3>
+                  </div>
+                  <div className="event-card__meta">
+                    <span className="event-card__meta-row">
+                      <svg className="event-card__meta-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fillRule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clipRule="evenodd" />
+                      </svg>
+                      {event.date}
+                    </span>
+                    <span className="event-card__meta-row">
+                      <svg className="event-card__meta-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clipRule="evenodd" />
+                      </svg>
+                      {event.time}
+                    </span>
+                    <span className="event-card__meta-row">
+                      <svg className="event-card__meta-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fillRule="evenodd" d="m9.69 18.933.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 0 0 .281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 1 0 3 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 0 0 2.273 1.765 11.842 11.842 0 0 0 .976.544l.062.029.018.008.006.003ZM10 11.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" clipRule="evenodd" />
+                      </svg>
+                      {event.location}
+                    </span>
+                  </div>
+                  <p className="event-card__description">{event.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
@@ -595,6 +933,17 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
             <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
           </svg>
           Prayer Times
+        </button>
+        <button
+          className={`nav-tab ${activeTab === "restaurants" ? "nav-tab--active" : ""}`}
+          onClick={() => setActiveTab("restaurants")}
+        >
+          <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+            <path d="M7 2v20"></path>
+            <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
+          </svg>
+          Restaurants
         </button>
         <button
           className={`nav-tab ${activeTab === "events" ? "nav-tab--active" : ""}`}
