@@ -236,10 +236,16 @@ function haversineDistance(
 }
 
 /* ────────── Component ────────── */
-export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
+export function PrayerTimes({
+  csvData = [],
+  initialTab = "prayers",
+}: {
+  csvData?: any[];
+  initialTab?: "prayers" | "restaurants" | "events" | "about";
+}) {
   const [selectedMasjidId, setSelectedMasjidId] = useState<string>("");
   const [activeTab, setActiveTab] = useState<"prayers" | "restaurants" | "events" | "about">(
-    "prayers"
+    initialTab
   );
 
   /* ── search combobox state ── */
