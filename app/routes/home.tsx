@@ -1,7 +1,10 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import { useSearchParams } from "react-router";
 import { PrayerTimes } from "~/prayerTimes/prayerTimes";
 import Papa from "papaparse";
+
+const VALID_TABS = ["prayers", "restaurants", "events", "about"] as const;
+type TabName = typeof VALID_TABS[number];
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -28,8 +31,8 @@ export async function clientLoader() {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  if (!loaderData || !loaderData.csvData) {
-    return <PrayerTimes csvData={[]} />;
-  }
-  return <PrayerTimes csvData={loaderData.csvData} />;
+  const [searchParams] = useSearchParams();
+  const tab = searchParams.get("tab") as TabName;
+  const initialTab: TabName = VALID_TABS.includes(tab) ? tab : "prayers";
+  return <PrayerTimes csvData={loaderData?.csvData ?? []} initialTab={initialTab} />;
 }

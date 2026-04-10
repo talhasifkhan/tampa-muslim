@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from "react";
+import { Link } from "react-router";
 
 type PrayerName = "Fajr" | "Dhuhr" | "Asr" | "Maghrib" | "Isha" | "Jumuah";
 
@@ -236,10 +237,16 @@ function haversineDistance(
 }
 
 /* ────────── Component ────────── */
-export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
+export function PrayerTimes({
+  csvData = [],
+  initialTab = "prayers",
+}: {
+  csvData?: any[];
+  initialTab?: "prayers" | "restaurants" | "events" | "about";
+}) {
   const [selectedMasjidId, setSelectedMasjidId] = useState<string>("");
   const [activeTab, setActiveTab] = useState<"prayers" | "restaurants" | "events" | "about">(
-    "prayers"
+    initialTab
   );
 
   /* ── search combobox state ── */
@@ -496,7 +503,7 @@ export function PrayerTimes({ csvData = [] }: { csvData?: any[] }) {
     <div className="layout-container">
       {/* ── Top Header ── */}
       <header className="header-top">
-        <h1 className="header-brand">TampaMuslim.com</h1>
+        <Link to="/" className="header-brand" style={{ textDecoration: "none" }}>TampaMuslim.com</Link>
 
         {/* Desktop Navigation (hidden on mobile) */}
         <nav className="desktop-nav">
