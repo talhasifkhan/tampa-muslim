@@ -6,6 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
+import { useEffect } from "react";
 
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -50,6 +51,16 @@ export function HydrateFallback() {
 }
 
 export default function App() {
+  useEffect(() => {
+    // Force a full reload when the browser restores a page from bfcache,
+    // which can leave React Router's navigation handlers unattached.
+    const handlePageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) window.location.reload();
+    };
+    window.addEventListener("pageshow", handlePageShow);
+    return () => window.removeEventListener("pageshow", handlePageShow);
+  }, []);
+
   return <Outlet />;
 }
 
