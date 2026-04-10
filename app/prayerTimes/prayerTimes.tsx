@@ -774,6 +774,7 @@ export function PrayerTimes({
 
         {activeTab === "restaurants" && (
           <div className="tab-content restaurant-view">
+            <p className="dummy-data-notice">⚠️ Restaurant listings are sample data and may not reflect real businesses.</p>
             <div className="masjid-picker">
               <div className="masjid-picker__row">
                 <div className="masjid-search">
@@ -884,6 +885,7 @@ export function PrayerTimes({
 
         {activeTab === "events" && (
           <div className="tab-content event-view">
+            <p className="dummy-data-notice">⚠️ Events listed are sample data and may not reflect real community events.</p>
             <div className="event-list">
               {STATIC_EVENTS.map((event) => (
                 <div key={event.id} className="event-card">

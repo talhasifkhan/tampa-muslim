@@ -77,7 +77,7 @@ export default function Landing() {
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           {SECTIONS.map(({ tab, label, description, icon }) => (
-            <Link key={tab} to={`/app?tab=${tab}`} className="section-card">
+            <Link key={tab} to={`/app?tab=${tab}`} prefetch="intent" className="section-card">
               <span style={{ color: "#10b981", flexShrink: 0 }}>{icon}</span>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 500, fontSize: "1rem", color: "#0f172a" }}>{label}</div>
