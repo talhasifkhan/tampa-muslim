@@ -1,0 +1,17 @@
+{
+  "name": "tampa-muslim-scraper",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scrape": "tsx index.ts"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "googleapis": "^144.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.9.0"
+  }
+}

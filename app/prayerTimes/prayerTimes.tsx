@@ -493,8 +493,6 @@ export function PrayerTimes({
   const headingTitle =
     activeTab === "prayers"
       ? "Prayer Times"
-      : activeTab === "restaurants"
-        ? "Halal Restaurants"
       : activeTab === "events"
         ? "Community Events"
         : "About TampaMuslim";
@@ -512,12 +510,6 @@ export function PrayerTimes({
             onClick={() => setActiveTab("prayers")}
           >
             Prayer Times
-          </button>
-          <button
-            className={`desktop-nav__tab ${activeTab === "restaurants" ? "desktop-nav__tab--active" : ""}`}
-            onClick={() => setActiveTab("restaurants")}
-          >
-            Restaurants
           </button>
           <button
             className={`desktop-nav__tab ${activeTab === "events" ? "desktop-nav__tab--active" : ""}`}
@@ -772,117 +764,6 @@ export function PrayerTimes({
           </div>
         )}
 
-        {activeTab === "restaurants" && (
-          <div className="tab-content restaurant-view">
-            <p className="dummy-data-notice">⚠️ Restaurant listings are sample data and may not reflect real businesses.</p>
-            <div className="masjid-picker">
-              <div className="masjid-picker__row">
-                <div className="masjid-search">
-                  <div className="masjid-search__input-wrap">
-                    <svg
-                      className="masjid-search__icon"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <input
-                      type="text"
-                      className="masjid-search__input"
-                      placeholder="Search name or cuisine..."
-                      value={restaurantSearchQuery}
-                      onChange={(e) => setRestaurantSearchQuery(e.target.value)}
-                    />
-                    {restaurantSearchQuery && (
-                      <button
-                        type="button"
-                        className="masjid-search__clear"
-                        onClick={() => setRestaurantSearchQuery("")}
-                        aria-label="Clear search"
-                      >
-                        ×
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  className="masjid-locate-btn"
-                  onClick={handleRestaurantFindClosest}
-                  disabled={restaurantLocateStatus === "loading"}
-                >
-                  {restaurantLocateStatus === "loading" ? (
-                    <span className="masjid-locate-btn__spinner" />
-                  ) : (
-                    <>📍 Closest</>
-                  )}
-                </button>
-              </div>
-
-              {restaurantLocateStatus === "denied" && (
-                <span className="masjid-locate-error">
-                  Location access denied. Please enable location.
-                </span>
-              )}
-              {restaurantLocateStatus === "unavailable" && (
-                <span className="masjid-locate-error">
-                  Location is not available.
-                </span>
-              )}
-            </div>
-
-            <div className="restaurant-list">
-              {filteredRestaurants.length > 0 ? (
-                filteredRestaurants.map(r => {
-                  const dist = userLocation ? haversineDistance(userLocation.lat, userLocation.lng, r.lat, r.lng) : null;
-                  return (
-                    <div key={r.id} className="restaurant-card">
-                      <div className="restaurant-card__image-container">
-                        <img src={r.image} alt={r.name} className="restaurant-card__image" loading="lazy" />
-                      </div>
-                      <div className="restaurant-card__content">
-                        <div className="restaurant-card__info">
-                          <h3 className="restaurant-card__name">{r.name}</h3>
-                          <span className="restaurant-card__cuisine">{r.cuisine}</span>
-                          <div className="restaurant-card__meta">
-                            <span className="restaurant-card__address">{r.address}</span>
-                            {dist !== null && (
-                              <span className="restaurant-card__distance">
-                                📍 {(Math.round(dist * 10) / 10).toFixed(1)} mi
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        <div className="restaurant-card__actions">
-                          <a
-                            className="action-btn action-btn--navigate"
-                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.name + " " + r.address)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            🧭 Navigate
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="empty-state">
-                  <p>No restaurants found.</p>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
         {activeTab === "events" && (
           <div className="tab-content event-view">
             <p className="dummy-data-notice">⚠️ Events listed are sample data and may not reflect real community events.</p>
@@ -942,17 +823,6 @@ export function PrayerTimes({
             <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
           </svg>
           Prayer Times
-        </button>
-        <button
-          className={`nav-tab ${activeTab === "restaurants" ? "nav-tab--active" : ""}`}
-          onClick={() => setActiveTab("restaurants")}
-        >
-          <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
-            <path d="M7 2v20"></path>
-            <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
-          </svg>
-          Restaurants
         </button>
         <button
           className={`nav-tab ${activeTab === "events" ? "nav-tab--active" : ""}`}
