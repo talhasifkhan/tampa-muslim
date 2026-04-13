@@ -236,6 +236,93 @@ function haversineDistance(
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+/* ────────── Masjid Card ────────── */
+function MasjidCard({ masjid }: { masjid: Masjid }) {
+  return (
+    <div className="masjid-card">
+      <div className="masjid-card__header">
+        <h3 className="masjid-card__name">{masjid.name}</h3>
+        <span className="masjid-card__address">{masjid.address}</span>
+      </div>
+
+      <div className="masjid-card__prayers">
+        <div className="masjid-card__prayer-labels">
+          <span>IQAMAH</span>
+        </div>
+        {PRAYER_ORDER.map((prayer) => {
+          if (prayer === "Jumuah") {
+            const jumuahTimes = masjid.jumuahTimes;
+            const primaryTime =
+              jumuahTimes && jumuahTimes.length > 0
+                ? jumuahTimes[0]
+                : masjid.iqamahTimes.Jumuah;
+            return (
+              <div className="masjid-card__prayer-row" key={prayer}>
+                <span className="masjid-card__prayer-name">{prayer}</span>
+                <span className="masjid-card__prayer-time">{primaryTime}</span>
+              </div>
+            );
+          }
+          return (
+            <div className="masjid-card__prayer-row" key={prayer}>
+              <span className="masjid-card__prayer-name">{prayer}</span>
+              <span className="masjid-card__prayer-time">
+                {masjid.iqamahTimes[prayer]}
+              </span>
+            </div>
+          );
+        })}
+
+        {masjid.multipleKhutbahs &&
+          masjid.jumuahTimes &&
+          masjid.jumuahTimes.length > 1
+          ? masjid.jumuahTimes.slice(1).map((time, index) => (
+            <div className="masjid-card__prayer-row" key={`extra-jumuah-${index}`}>
+              <span className="masjid-card__prayer-name">
+                {`Jumuah ${index + 2}`}
+              </span>
+              <span className="masjid-card__prayer-time">{time}</span>
+            </div>
+          ))
+          : null}
+      </div>
+
+      <div className="masjid-card__meta">
+        <span className="masjid-card__updated">
+          {masjid.lastUpdated && `Updated: ${masjid.lastUpdated}`}
+        </span>
+        <a
+          className="masjid-card__report"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSfakgO9s0pIemEJJvdgs_zw_xcTZa8dmFrwOTE0a6FMP995bQ/viewform?usp=dialog"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Report incorrect times
+        </a>
+      </div>
+
+      <div className="masjid-card__actions">
+        <a
+          className="masjid-card__btn masjid-card__btn--website"
+          href={masjid.website}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Visit Website
+        </a>
+        <a
+          className="masjid-card__btn masjid-card__btn--navigate"
+          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(masjid.address)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Navigate
+        </a>
+      </div>
+    </div>
+  );
+}
+
 /* ────────── Component ────────── */
 export function PrayerTimes({
   csvData = [],
@@ -673,92 +760,14 @@ export function PrayerTimes({
             </div>
 
             {selectedMasjid ? (
-              <div className="prayer-view">
-                <div className="prayer-view__header">
-                  <h3 className="masjid-name">{selectedMasjid.name}</h3>
-                  <span className="masjid-address">{selectedMasjid.address}</span>
-                </div>
-
-                <div className="prayer-list">
-                  {PRAYER_ORDER.map((prayer) => {
-                    if (prayer === "Jumuah") {
-                      const jumuahTimes = selectedMasjid.jumuahTimes;
-                      const primaryTime =
-                        jumuahTimes && jumuahTimes.length > 0
-                          ? jumuahTimes[0]
-                          : selectedMasjid.iqamahTimes.Jumuah;
-                      return (
-                        <div className="prayer-row" key={prayer}>
-                          <span className="prayer-row__name">{prayer}</span>
-                          <span className="prayer-row__time">{primaryTime}</span>
-                        </div>
-                      );
-                    }
-                    return (
-                      <div className="prayer-row" key={prayer}>
-                        <span className="prayer-row__name">{prayer}</span>
-                        <span className="prayer-row__time">
-                          {selectedMasjid.iqamahTimes[prayer]}
-                        </span>
-                      </div>
-                    );
-                  })}
-
-                  {selectedMasjid.multipleKhutbahs &&
-                    selectedMasjid.jumuahTimes &&
-                    selectedMasjid.jumuahTimes.length > 1
-                    ? selectedMasjid.jumuahTimes.slice(1).map((time, index) => (
-                      <div className="prayer-row" key={`extra-jumuah-${index}`}>
-                        <span className="prayer-row__name">
-                          {`Jumuah ${index + 2}`}
-                        </span>
-                        <span className="prayer-row__time">{time}</span>
-                      </div>
-                    ))
-                    : null}
-                </div>
-
-                <div className="meta-info">
-                  <div className="meta-info__links">
-                    <span>
-                      {selectedMasjid.lastUpdated &&
-                        `Updated: ${selectedMasjid.lastUpdated}`}
-                    </span>
-                    <a
-                      href="https://docs.google.com/forms/d/e/1FAIpQLSfakgO9s0pIemEJJvdgs_zw_xcTZa8dmFrwOTE0a6FMP995bQ/viewform?usp=dialog"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Report incorrect times
-                    </a>
-                  </div>
-                  <p className="disclaimer-text">
-                    Disclaimer: Prayer times are community-sourced and may occasionally be out of date.
-                  </p>
-                </div>
-
-                <div className="action-buttons">
-                  <a
-                    className="action-btn action-btn--secondary"
-                    href={selectedMasjid.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Visit Website
-                  </a>
-                  <a
-                    className="action-btn action-btn--navigate"
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedMasjid.address)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    🧭 Navigate
-                  </a>
-                </div>
+              <div className="masjid-grid masjid-grid--single">
+                <MasjidCard masjid={selectedMasjid} />
               </div>
             ) : (
-              <div className="empty-state">
-                <p>Search for a location or tap 📍 Closest to view times.</p>
+              <div className="masjid-grid">
+                {masjidsData.map((m) => (
+                  <MasjidCard key={m.id} masjid={m} />
+                ))}
               </div>
             )}
           </div>
