@@ -75,6 +75,11 @@ export default function Landing() {
             </Link>
           ))}
         </div>
+        <div style={{ textAlign: "center", marginTop: "2rem" }}>
+          <Link to="/changelog" prefetch="intent" style={{ color: "#6b7280", fontSize: "0.82rem", textDecoration: "none" }}>
+            View changelog
+          </Link>
+        </div>
       </main>
     </div>
   );
