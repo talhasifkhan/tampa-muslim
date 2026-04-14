@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router";
 import { useTheme } from "../useTheme";
+import { MASJID_REGISTRY } from "../data/masjids";
 
 type PrayerName = "Fajr" | "Dhuhr" | "Asr" | "Maghrib" | "Isha" | "Jumuah";
 
@@ -16,65 +17,6 @@ export type Masjid = {
   jumuahTimes?: string[];
   lastUpdated?: string;
 };
-
-const STATIC_MASJID_INFO = [
-  {
-    id: "istaba",
-    name: "Islamic Society of Tampa Bay Area (ISTABA)",
-    address: "7326 E. Sligh Ave, Tampa, FL",
-    lat: 27.9897,
-    lng: -82.3876,
-    website: "https://www.istaba.org/",
-  },
-  {
-    id: "isonet",
-    name: "Islamic Society of New Tampa (ISONET)",
-    address: "15830 Morris Bridge Rd, Tampa, FL",
-    lat: 28.0742,
-    lng: -82.3471,
-    website: "https://www.newtampamasjid.org/",
-  },
-  {
-    id: "qassam",
-    name: "Masjid Al-Qassam (ICT)",
-    address: "6406 N 56th St, Tampa, FL",
-    lat: 28.0244,
-    lng: -82.3936,
-    website: "https://ictampa.org/",
-  },
-  {
-    id: "brndon",
-    name: "Islamic Center of Brandon",
-    address: "1006 Victoria Street. Brandon, FL 33510",
-    lat: 27.9333,
-    lng: -82.2878,
-    website: "https://www.brandonmasjid.org/",
-  },
-  {
-    id: "tmc",
-    name: "The Muslim Connection (TMC)",
-    address: "8080 N 56th St, Tampa, FL 33617",
-    lat: 28.0444,
-    lng: -82.3936,
-    website: "https://themuslimconnection.com/",
-  },
-  {
-    id: "alrahma",
-    name: "Masjid Al-Rahma",
-    address: "9844 Skewlee Rd, Thonotosassa, FL 33592",
-    lat: 28.0550,
-    lng: -82.2850,
-    website: "https://alrahmamasjid.org/",
-  },
-  {
-    id: "jsmc",
-    name: "Jesus Son of Mary Center (JSMC)",
-    address: "3457 W Kenyon Ave, Tampa, FL 33614",
-    lat: 28.0260,
-    lng: -82.4980,
-    website: "https://jsmctampa.org/",
-  },
-];
 
 /* ────────── Static Restaurant Data ────────── */
 export type Restaurant = {
@@ -424,7 +366,7 @@ export function PrayerTimes({
 
   /* ── build masjid data from CSV ── */
   const masjidsData = useMemo(() => {
-    return STATIC_MASJID_INFO.map((info) => {
+    return MASJID_REGISTRY.map((info) => {
       const csvRow = csvData.find(
         (row) => row.masjid_name?.trim() === info.name.trim()
       );

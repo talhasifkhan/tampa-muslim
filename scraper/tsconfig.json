@@ -6,7 +6,8 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "rootDir": "..",
     "outDir": "dist"
   },
-  "include": ["*.ts", "scrapers/*.ts"]
+  "include": ["*.ts", "scrapers/*.ts", "../app/data/masjids.ts"]
 }
