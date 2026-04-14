@@ -16,13 +16,28 @@ type ChangeEntry = {
 const CHANGELOG: ChangeEntry[] = [
   {
     date: "April 14, 2026",
+    title: "Performance, PWA support & animations",
+    items: [
+      "Fonts are now self-hosted — no more Google Fonts dependency, faster load on mobile",
+      "App is installable as a PWA via Add to Home Screen on iOS and Android",
+      "Service worker caches the app shell for offline use; prayer times use network-first with offline fallback",
+      "Prayer times data is cached in memory per session — updates to the sheet appear on next page refresh",
+      "Page transitions use the View Transitions API for smooth fade animations between routes",
+      "Tab switches within the app animate in",
+      "Loading bar appears at the top of the screen when navigating to a page that fetches data",
+      "Removed aggressive back/forward cache reload that caused unnecessary full-page refreshes",
+      "Theme toggle and changelog link have larger tap targets (44px+) for easier mobile tapping",
+    ],
+  },
+  {
+    date: "April 14, 2026",
     title: "Dark mode & visual polish",
     items: [
       "Dark mode toggle in the header — persists across sessions and respects system preference",
-      "Dark theme uses neutral grays (no blue tint) for a clean night-time look",
+      "Dark theme uses neutral grays throughout — no dark green backgrounds or borders",
       "Masjid card names are larger and easier to read",
       "All cards (masjid, event, restaurant) share a consistent warm off-white background",
-      "Landing page navigation cards use a soft green tint tied to the app's emerald accent",
+      "Landing page shows a randomly selected Quran verse or hadith with Arabic text and translation on each visit",
     ],
   },
   {

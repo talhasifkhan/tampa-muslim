@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation,
 } from "react-router";
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -42,8 +43,19 @@ export function HydrateFallback() {
   );
 }
 
+function LoadingBar() {
+  const navigation = useNavigation();
+  if (navigation.state === "idle") return null;
+  return <div className="nav-loading-bar" />;
+}
+
 export default function App() {
-  return <Outlet />;
+  return (
+    <>
+      <LoadingBar />
+      <Outlet />
+    </>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

@@ -1137,6 +1137,25 @@ html[data-theme="dark"] .theme-toggle-btn:hover {
   color: #10b981;
 }
 
+/* ── Navigation Loading Bar ── */
+.nav-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #10b981;
+  z-index: 9999;
+  transform-origin: left;
+  animation: loading-bar 1.2s ease-in-out infinite;
+}
+
+@keyframes loading-bar {
+  0%   { transform: scaleX(0); opacity: 1; }
+  60%  { transform: scaleX(0.85); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
 /* ── Page & Tab Animations ── */
 
 @keyframes fade-up-in {
