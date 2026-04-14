@@ -50,7 +50,7 @@ const SECTIONS = [
 export default function Landing() {
   const { isDark, toggleTheme } = useTheme();
   return (
-    <div className="layout-container landing-page" style={{ paddingBottom: 0 }}>
+    <div className="layout-container" style={{ paddingBottom: 0 }}>
       <header className="header-top">
         <h1 className="header-brand">TampaMuslim.com</h1>
         <button
