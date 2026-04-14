@@ -15,6 +15,17 @@ type ChangeEntry = {
 
 const CHANGELOG: ChangeEntry[] = [
   {
+    date: "April 14, 2026",
+    title: "Dark mode & visual polish",
+    items: [
+      "Dark mode toggle in the header — persists across sessions and respects system preference",
+      "Dark theme uses neutral grays (no blue tint) for a clean night-time look",
+      "Masjid card names are larger and easier to read",
+      "All cards (masjid, event, restaurant) share a consistent warm off-white background",
+      "Landing page navigation cards use a soft green tint tied to the app's emerald accent",
+    ],
+  },
+  {
     date: "April 13, 2026",
     title: "Prayer times card redesign",
     items: [
