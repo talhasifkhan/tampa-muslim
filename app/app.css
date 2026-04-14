@@ -288,7 +288,7 @@ body {
 
 /* ── Masjid Card ── */
 .masjid-card {
-  background: #fefdfb;
+  background: #faf6f0;
   border: 1px solid #e8e4de;
   border-radius: 16px;
   padding: 1.75rem 2rem;
@@ -301,7 +301,7 @@ body {
 
 .masjid-card__name {
   font-family: var(--font-serif);
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #1a3a2a;
   margin: 0 0 0.2rem;
