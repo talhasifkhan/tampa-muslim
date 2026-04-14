@@ -47,12 +47,6 @@ const SECTIONS = [
   },
 ];
 
-const chevron = (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "#cbd5e1", flexShrink: 0 }}>
-    <polyline points="9 18 15 12 9 6" />
-  </svg>
-);
-
 export default function Landing() {
   const { isDark, toggleTheme } = useTheme();
   return (
@@ -82,23 +76,23 @@ export default function Landing() {
       </header>
       <main className="main-content">
         <h2 className="section-title">Assalamu Alaikum</h2>
-        <p style={{ textAlign: "center", color: "#64748b", marginBottom: "1.5rem", marginTop: "-0.5rem" }}>
-          What are you looking for?
-        </p>
+        <p className="landing-subtitle">What are you looking for?</p>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxWidth: "500px", margin: "0 auto", width: "100%" }}>
           {SECTIONS.map(({ tab, label, description, icon }) => (
             <Link key={tab} to={`/app?tab=${tab}`} prefetch="intent" className="section-card">
-              <span style={{ color: "#10b981", flexShrink: 0 }}>{icon}</span>
+              <span className="section-card__icon">{icon}</span>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 500, fontSize: "1rem", color: "#0f172a" }}>{label}</div>
-                <div style={{ color: "#64748b", fontSize: "0.85rem", fontWeight: 300 }}>{description}</div>
+                <div className="section-card__label">{label}</div>
+                <div className="section-card__desc">{description}</div>
               </div>
-              {chevron}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="section-card__chevron" aria-hidden="true">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
             </Link>
           ))}
         </div>
         <div style={{ textAlign: "center", marginTop: "2rem" }}>
-          <Link to="/changelog" prefetch="intent" style={{ color: "#6b7280", fontSize: "0.82rem", textDecoration: "none" }}>
+          <Link to="/changelog" prefetch="intent" className="landing-changelog-link">
             View changelog
           </Link>
         </div>

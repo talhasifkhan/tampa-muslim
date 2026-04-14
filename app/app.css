@@ -848,225 +848,282 @@ body {
   }
 }
 
-/* ── Dark Mode ── */
+/* ── Landing page classes (replacing inline color styles) ── */
+.landing-subtitle {
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+  margin-top: -0.5rem;
+}
+
+.section-card__icon {
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+.section-card__label {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.section-card__desc {
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 300;
+}
+
+.section-card__chevron {
+  color: #cbd5e1;
+  flex-shrink: 0;
+}
+
+.landing-changelog-link {
+  color: #6b7280;
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+
+/* ── Dark Mode ──
+   Neutral grays matching Claude's dark UI (~#1e1e1e base)
+   ──────────────────────────────────────────────────────── */
 html[data-theme="dark"],
 html[data-theme="dark"] body {
-  background-color: #0f172a;
-  color: #e2e8f0;
+  background-color: #1e1e1e;
+  color: #ececec;
 }
 
 html[data-theme="dark"] .header-top {
-  background: #1e293b;
-  border-bottom-color: #334155;
+  background: #282828;
+  border-bottom-color: #3d3d3d;
 }
 
 html[data-theme="dark"] .header-brand {
-  color: #f1f5f9;
+  color: #ececec;
 }
 
 html[data-theme="dark"] .desktop-nav__tab {
-  color: #475569;
+  color: #888;
 }
 
 html[data-theme="dark"] .desktop-nav__tab:hover {
-  color: #f1f5f9;
+  color: #ececec;
 }
 
 html[data-theme="dark"] .section-title {
-  color: #f1f5f9;
+  color: #ececec;
 }
 
-html[data-theme="dark"] .masjid-search__input {
-  background: #1e293b;
-  border-color: #334155;
-  color: #e2e8f0;
-}
-
-html[data-theme="dark"] .masjid-search__input::placeholder {
-  color: #475569;
-}
-
-html[data-theme="dark"] .masjid-search__dropdown {
-  background: #1e293b;
-  border-color: #334155;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-}
-
-html[data-theme="dark"] .masjid-search__option--highlighted {
-  background: #263346;
-}
-
-html[data-theme="dark"] .masjid-search__option--selected {
-  background: #0d2a1f;
-}
-
-html[data-theme="dark"] .masjid-search__option-name {
-  color: #e2e8f0;
-}
-
-html[data-theme="dark"] .masjid-search__option-addr {
-  color: #94a3b8;
-}
-
-html[data-theme="dark"] .masjid-search__clear {
-  background: rgba(71, 85, 105, 0.3);
-  color: #94a3b8;
-}
-
-html[data-theme="dark"] .masjid-locate-btn {
-  background: #0d2a1f;
-  border-color: #059669;
-  color: #34d399;
-}
-
-html[data-theme="dark"] .masjid-locate-btn:active {
-  background: #064e3b;
-}
-
-html[data-theme="dark"] .masjid-card {
-  background: #1e293b;
-  border-color: #334155;
-}
-
-html[data-theme="dark"] .masjid-card__name {
-  color: #d1fae5;
-}
-
-html[data-theme="dark"] .masjid-card__address {
-  color: #94a3b8;
-}
-
-html[data-theme="dark"] .masjid-card__prayer-labels {
-  color: #64748b;
-  border-bottom-color: #334155;
-}
-
-html[data-theme="dark"] .masjid-card__prayer-row {
-  border-color: #334155;
-}
-
-html[data-theme="dark"] .masjid-card__prayer-name {
-  color: #d1fae5;
-}
-
-html[data-theme="dark"] .masjid-card__prayer-time {
-  color: #e2e8f0;
-}
-
-html[data-theme="dark"] .masjid-card__meta {
-  border-top-color: #334155;
-}
-
-html[data-theme="dark"] .masjid-card__updated {
-  color: #64748b;
-}
-
-html[data-theme="dark"] .masjid-card__btn--website {
-  background: transparent;
-  color: #d1fae5;
-  border-color: #334155;
-}
-
-html[data-theme="dark"] .masjid-card__btn--website:hover {
-  background: #0d2a1f;
-  border-color: #10b981;
-}
-
-html[data-theme="dark"] .bottom-nav {
-  background: #1e293b;
-  border-top-color: #334155;
-}
-
-html[data-theme="dark"] .nav-tab {
-  color: #475569;
-}
-
-html[data-theme="dark"] .restaurant-card {
-  background: #1e293b;
-  border-color: #334155;
-}
-
-html[data-theme="dark"] .restaurant-card__image-container {
-  background: #263346;
-}
-
-html[data-theme="dark"] .restaurant-card__name {
-  color: #f1f5f9;
-}
-
-html[data-theme="dark"] .restaurant-card__address {
-  color: #94a3b8;
-}
-
-html[data-theme="dark"] .event-card {
-  background: #1e293b;
-  border-color: #334155;
-}
-
-html[data-theme="dark"] .event-card__title {
-  color: #f1f5f9;
-}
-
-html[data-theme="dark"] .event-card__meta-row {
-  color: #94a3b8;
-}
-
-html[data-theme="dark"] .event-card__description {
-  color: #94a3b8;
-}
-
-html[data-theme="dark"] .daily-reminder {
-  background: #0d2a1f;
-  border-color: #065f46;
-}
-
-html[data-theme="dark"] .daily-reminder__arabic {
-  color: #f1f5f9;
-}
-
-html[data-theme="dark"] .daily-reminder__translation {
-  color: #cbd5e1;
+html[data-theme="dark"] .landing-subtitle {
+  color: #a0a0a0;
 }
 
 html[data-theme="dark"] .section-card {
-  background: #1e293b;
-  border-color: #334155;
-  color: #f1f5f9;
+  background: #282828;
+  border-color: #3d3d3d;
 }
 
 html[data-theme="dark"] .section-card:hover {
   border-color: #10b981;
 }
 
-html[data-theme="dark"] .dummy-data-notice {
-  background: #2d1f00;
-  border-color: #92400e;
-  color: #fcd34d;
+html[data-theme="dark"] .section-card__label {
+  color: #ececec;
 }
 
-html[data-theme="dark"] .changelog__title {
-  color: #f1f5f9;
+html[data-theme="dark"] .section-card__desc {
+  color: #a0a0a0;
 }
 
-html[data-theme="dark"] .changelog__list li {
-  color: #cbd5e1;
+html[data-theme="dark"] .section-card__chevron {
+  color: #555;
 }
 
-html[data-theme="dark"] .changelog__date {
-  color: #64748b;
+html[data-theme="dark"] .landing-changelog-link {
+  color: #888;
 }
 
-html[data-theme="dark"] .empty-state {
-  color: #94a3b8;
+html[data-theme="dark"] .masjid-search__input {
+  background: #282828;
+  border-color: #3d3d3d;
+  color: #ececec;
+}
+
+html[data-theme="dark"] .masjid-search__input::placeholder {
+  color: #666;
+}
+
+html[data-theme="dark"] .masjid-search__dropdown {
+  background: #282828;
+  border-color: #3d3d3d;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme="dark"] .masjid-search__option--highlighted {
+  background: #323232;
+}
+
+html[data-theme="dark"] .masjid-search__option--selected {
+  background: #0a2416;
+}
+
+html[data-theme="dark"] .masjid-search__option-name {
+  color: #ececec;
+}
+
+html[data-theme="dark"] .masjid-search__option-addr {
+  color: #a0a0a0;
+}
+
+html[data-theme="dark"] .masjid-search__clear {
+  background: rgba(255, 255, 255, 0.08);
+  color: #a0a0a0;
 }
 
 html[data-theme="dark"] .masjid-search__no-results {
-  color: #64748b;
+  color: #888;
+}
+
+html[data-theme="dark"] .masjid-locate-btn {
+  background: #0a2416;
+  border-color: #1a5c38;
+  color: #34d399;
+}
+
+html[data-theme="dark"] .masjid-locate-btn:active {
+  background: #0d3320;
+}
+
+html[data-theme="dark"] .masjid-card {
+  background: #282828;
+  border-color: #3d3d3d;
+}
+
+html[data-theme="dark"] .masjid-card__name {
+  color: #ececec;
+}
+
+html[data-theme="dark"] .masjid-card__address {
+  color: #a0a0a0;
+}
+
+html[data-theme="dark"] .masjid-card__prayer-labels {
+  color: #888;
+  border-bottom-color: #3d3d3d;
+}
+
+html[data-theme="dark"] .masjid-card__prayer-row {
+  border-color: #3d3d3d;
+}
+
+html[data-theme="dark"] .masjid-card__prayer-name {
+  color: #ececec;
+}
+
+html[data-theme="dark"] .masjid-card__prayer-time {
+  color: #ececec;
+}
+
+html[data-theme="dark"] .masjid-card__meta {
+  border-top-color: #3d3d3d;
+}
+
+html[data-theme="dark"] .masjid-card__updated {
+  color: #888;
+}
+
+html[data-theme="dark"] .masjid-card__btn--website {
+  background: transparent;
+  color: #ececec;
+  border-color: #3d3d3d;
+}
+
+html[data-theme="dark"] .masjid-card__btn--website:hover {
+  background: #0a2416;
+  border-color: #10b981;
+}
+
+html[data-theme="dark"] .bottom-nav {
+  background: #282828;
+  border-top-color: #3d3d3d;
+}
+
+html[data-theme="dark"] .nav-tab {
+  color: #888;
+}
+
+html[data-theme="dark"] .restaurant-card {
+  background: #282828;
+  border-color: #3d3d3d;
+}
+
+html[data-theme="dark"] .restaurant-card__image-container {
+  background: #323232;
+}
+
+html[data-theme="dark"] .restaurant-card__name {
+  color: #ececec;
+}
+
+html[data-theme="dark"] .restaurant-card__address {
+  color: #a0a0a0;
+}
+
+html[data-theme="dark"] .event-card {
+  background: #282828;
+  border-color: #3d3d3d;
+}
+
+html[data-theme="dark"] .event-card__title {
+  color: #ececec;
+}
+
+html[data-theme="dark"] .event-card__meta-row {
+  color: #a0a0a0;
+}
+
+html[data-theme="dark"] .event-card__description {
+  color: #a0a0a0;
+}
+
+html[data-theme="dark"] .daily-reminder {
+  background: #0a2416;
+  border-color: #1a5c38;
+}
+
+html[data-theme="dark"] .daily-reminder__arabic {
+  color: #ececec;
+}
+
+html[data-theme="dark"] .daily-reminder__translation {
+  color: #c0c0c0;
+}
+
+html[data-theme="dark"] .dummy-data-notice {
+  background: #2a1f00;
+  border-color: #7a4400;
+  color: #fbbf24;
+}
+
+html[data-theme="dark"] .changelog__title {
+  color: #ececec;
+}
+
+html[data-theme="dark"] .changelog__list li {
+  color: #c0c0c0;
+}
+
+html[data-theme="dark"] .changelog__date {
+  color: #888;
+}
+
+html[data-theme="dark"] .empty-state {
+  color: #a0a0a0;
 }
 
 html[data-theme="dark"] .theme-toggle-btn {
-  border-color: #334155;
-  color: #94a3b8;
+  border-color: #3d3d3d;
+  color: #a0a0a0;
 }
 
 html[data-theme="dark"] .theme-toggle-btn:hover {
