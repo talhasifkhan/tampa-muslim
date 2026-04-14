@@ -640,6 +640,7 @@ export function PrayerTimes({
       <main className="main-content">
         <h2 className={`section-title${activeTab === "prayers" && selectedMasjid ? " section-title--hidden-mobile" : ""}`}>{headingTitle}</h2>
 
+        <div key={activeTab} className="tab-panel">
         {activeTab === "prayers" && (
           <div className="tab-content">
             {/* ── Masjid Search + Locate ── */}
@@ -843,6 +844,7 @@ export function PrayerTimes({
             </p>
           </div>
         )}
+        </div>
       </main>
 
       {/* ── Bottom Navigation Bar ── */}

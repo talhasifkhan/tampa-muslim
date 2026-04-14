@@ -183,14 +183,14 @@ export default function Landing() {
       <main className="main-content">
         <h2 className="section-title">Assalamu Alaikum</h2>
         <p className="landing-subtitle">What are you looking for?</p>
-        <div className="daily-reminder" style={{ maxWidth: "500px", margin: "0 auto 1.75rem", width: "100%" }}>
+        <div className="daily-reminder" style={{ maxWidth: "500px", margin: "0 auto 1.5rem", width: "100%" }}>
           <p className="daily-reminder__arabic">{dailyQuote.arabic}</p>
           <p className="daily-reminder__translation">"{dailyQuote.text}"</p>
           <p className="daily-reminder__reference">— {dailyQuote.source}</p>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxWidth: "500px", margin: "0 auto", width: "100%" }}>
           {SECTIONS.map(({ tab, label, description, icon }) => (
-            <Link key={tab} to={`/app?tab=${tab}`} prefetch="intent" className="section-card">
+            <Link key={tab} to={`/app?tab=${tab}`} prefetch="intent" viewTransition className="section-card">
               <span className="section-card__icon">{icon}</span>
               <div style={{ flex: 1 }}>
                 <div className="section-card__label">{label}</div>
@@ -203,7 +203,7 @@ export default function Landing() {
           ))}
         </div>
         <div style={{ textAlign: "center", marginTop: "2rem" }}>
-          <Link to="/changelog" prefetch="intent" className="landing-changelog-link">
+          <Link to="/changelog" prefetch="intent" viewTransition className="landing-changelog-link">
             View changelog
           </Link>
         </div>

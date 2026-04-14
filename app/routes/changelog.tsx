@@ -61,7 +61,7 @@ export default function Changelog() {
   return (
     <div className="layout-container" style={{ paddingBottom: 0 }}>
       <header className="header-top">
-        <Link to="/" className="header-brand" style={{ textDecoration: "none" }}>
+        <Link to="/" viewTransition className="header-brand" style={{ textDecoration: "none" }}>
           TampaMuslim.com
         </Link>
       </header>

@@ -13,7 +13,15 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+// In-memory cache: survives SPA navigation but clears on page refresh,
+// so users always get fresh data when they reload.
+let csvMemoryCache: unknown[] | null = null;
+
 export async function clientLoader() {
+  if (csvMemoryCache) {
+    return { csvData: csvMemoryCache };
+  }
+
   const url =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vTq2AWn26xfZBvpsXjYnnMi4GkMA1TsbkSY56NG9n6KWKAZ86Z5O2PfTqYjw285NoR6AqNoTrZKOsnC/pub?gid=1483093150&single=true&output=csv";
   try {
@@ -23,6 +31,7 @@ export async function clientLoader() {
     }
     const csvText = await response.text();
     const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+    csvMemoryCache = parsed.data;
     return { csvData: parsed.data };
   } catch (err) {
     console.error("Error fetching or parsing CSV:", err);
