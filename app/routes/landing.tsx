@@ -1,6 +1,112 @@
 import { Link } from "react-router";
 import { useTheme } from "../useTheme";
 
+const QUOTES = [
+  {
+    text: "Indeed, with hardship comes ease.",
+    source: "Quran 94:6",
+    arabic: "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا",
+  },
+  {
+    text: "And He is with you wherever you are.",
+    source: "Quran 57:4",
+    arabic: "وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ",
+  },
+  {
+    text: "So remember Me; I will remember you.",
+    source: "Quran 2:152",
+    arabic: "فَاذْكُرُونِي أَذْكُرْكُمْ",
+  },
+  {
+    text: "And your Lord says, 'Call upon Me; I will respond to you.'",
+    source: "Quran 40:60",
+    arabic: "وَقَالَ رَبُّكُمُ ادْعُونِي أَسْتَجِبْ لَكُمْ",
+  },
+  {
+    text: "Allah does not burden a soul beyond that it can bear.",
+    source: "Quran 2:286",
+    arabic: "لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا",
+  },
+  {
+    text: "Verily, Allah is with the patient.",
+    source: "Quran 2:153",
+    arabic: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ",
+  },
+  {
+    text: "And He found you lost and guided you.",
+    source: "Quran 93:7",
+    arabic: "وَوَجَدَكَ ضَالًّا فَهَدَىٰ",
+  },
+  {
+    text: "Whoever saves one life, it is as if he has saved all of mankind.",
+    source: "Quran 5:32",
+    arabic: "وَمَنْ أَحْيَاهَا فَكَأَنَّمَا أَحْيَا النَّاسَ جَمِيعًا",
+  },
+  {
+    text: "Indeed, Allah loves those who rely upon Him.",
+    source: "Quran 3:159",
+    arabic: "إِنَّ اللَّهَ يُحِبُّ الْمُتَوَكِّلِينَ",
+  },
+  {
+    text: "And do good; indeed, Allah loves the doers of good.",
+    source: "Quran 2:195",
+    arabic: "وَأَحْسِنُوا ۛ إِنَّ اللَّهَ يُحِبُّ الْمُحْسِنِينَ",
+  },
+  {
+    text: "The best of people are those who are most beneficial to others.",
+    source: "Hadith — al-Mu'jam al-Awsat",
+    arabic: "خَيْرُ النَّاسِ أَنْفَعُهُمْ لِلنَّاسِ",
+  },
+  {
+    text: "None of you truly believes until he loves for his brother what he loves for himself.",
+    source: "Hadith — Bukhari & Muslim",
+    arabic: "لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ",
+  },
+  {
+    text: "Smiling at your brother is charity.",
+    source: "Hadith — Tirmidhi",
+    arabic: "تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ صَدَقَةٌ",
+  },
+  {
+    text: "Speak good or remain silent.",
+    source: "Hadith — Bukhari & Muslim",
+    arabic: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ",
+  },
+  {
+    text: "The strong person is not the one who can wrestle someone down, but the one who controls themselves when angry.",
+    source: "Hadith — Bukhari",
+    arabic: "لَيْسَ الشَّدِيدُ بِالصُّرَعَةِ، إِنَّمَا الشَّدِيدُ الَّذِي يَمْلِكُ نَفْسَهُ عِنْدَ الْغَضَبِ",
+  },
+  {
+    text: "Make things easy, do not make them difficult; give glad tidings, do not cause people to flee.",
+    source: "Hadith — Bukhari & Muslim",
+    arabic: "يَسِّرُوا وَلَا تُعَسِّرُوا، وَبَشِّرُوا وَلَا تُنَفِّرُوا",
+  },
+  {
+    text: "The merciful are shown mercy by the Most Merciful. Show mercy to those on earth, and He in heaven will show mercy to you.",
+    source: "Hadith — Tirmidhi",
+    arabic: "الرَّاحِمُونَ يَرْحَمُهُمُ الرَّحْمَنُ، ارْحَمُوا مَنْ فِي الْأَرْضِ يَرْحَمْكُمْ مَنْ فِي السَّمَاءِ",
+  },
+  {
+    text: "Verily, actions are by intentions.",
+    source: "Hadith — Bukhari & Muslim",
+    arabic: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ",
+  },
+  {
+    text: "Take advantage of five before five: your youth before your old age, your health before your illness, your wealth before your poverty, your free time before your preoccupation, and your life before your death.",
+    source: "Hadith — al-Hakim",
+    arabic: "اغْتَنِمْ خَمْسًا قَبْلَ خَمْسٍ",
+  },
+  {
+    text: "Do not belittle any good deed, even meeting your brother with a cheerful face.",
+    source: "Hadith — Muslim",
+    arabic: "لَا تَحْقِرَنَّ مِنَ الْمَعْرُوفِ شَيْئًا، وَلَوْ أَنْ تَلْقَى أَخَاكَ بِوَجْهٍ طَلْقٍ",
+  },
+];
+
+const dailyQuote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+
+
 export function meta() {
   return [
     { title: "TampaMuslim.com" },
@@ -77,6 +183,11 @@ export default function Landing() {
       <main className="main-content">
         <h2 className="section-title">Assalamu Alaikum</h2>
         <p className="landing-subtitle">What are you looking for?</p>
+        <div className="daily-reminder" style={{ maxWidth: "500px", margin: "0 auto 1.75rem", width: "100%" }}>
+          <p className="daily-reminder__arabic">{dailyQuote.arabic}</p>
+          <p className="daily-reminder__translation">"{dailyQuote.text}"</p>
+          <p className="daily-reminder__reference">— {dailyQuote.source}</p>
+        </div>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxWidth: "500px", margin: "0 auto", width: "100%" }}>
           {SECTIONS.map(({ tab, label, description, icon }) => (
             <Link key={tab} to={`/app?tab=${tab}`} prefetch="intent" className="section-card">
