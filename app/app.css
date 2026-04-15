@@ -785,6 +785,9 @@ body {
   .desktop-nav {
     display: flex;
     gap: 1rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .bottom-nav {
@@ -802,6 +805,13 @@ body {
 
   .masjid-grid--single {
     grid-template-columns: 1fr;
+  }
+
+  .event-list,
+  .dummy-data-notice {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -1135,6 +1145,43 @@ html[data-theme="dark"] .theme-toggle-btn {
 html[data-theme="dark"] .theme-toggle-btn:hover {
   border-color: #10b981;
   color: #10b981;
+}
+
+/* ── Hamster Wheel Page Loader ── */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  z-index: 9998;
+  gap: 1rem;
+}
+
+.page-loader__label {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #64748b;
+  letter-spacing: 0.01em;
+}
+
+.page-loader__spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid #d1fae5;
+  border-top-color: #10b981;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+html[data-theme="dark"] .page-loader {
+  background: #1e1e1e;
+}
+
+html[data-theme="dark"] .page-loader__label {
+  color: #94a3b8;
 }
 
 /* ── Navigation Loading Bar ── */

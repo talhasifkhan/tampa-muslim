@@ -20,7 +20,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#10b981" />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/icon.svg" />
         <Meta />
         <Links />
         {/* Prevent flash of wrong theme on load */}
@@ -37,22 +39,28 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export function HydrateFallback() {
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-      <p>Loading TampaMuslim...</p>
+    <div className="page-loader">
+      <div className="page-loader__spinner" aria-hidden="true" />
+      <span className="page-loader__label">Loading prayer times…</span>
     </div>
   );
 }
 
-function LoadingBar() {
+function PageLoader() {
   const navigation = useNavigation();
   if (navigation.state === "idle") return null;
-  return <div className="nav-loading-bar" />;
+  return (
+    <div className="page-loader">
+      <div className="page-loader__spinner" aria-hidden="true" />
+      <span className="page-loader__label">Loading prayer times…</span>
+    </div>
+  );
 }
 
 export default function App() {
   return (
     <>
-      <LoadingBar />
+      <PageLoader />
       <Outlet />
     </>
   );

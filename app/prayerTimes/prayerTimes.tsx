@@ -86,6 +86,8 @@ type CommunityEvent = {
   location: string;
   description: string;
   category: "lecture" | "fundraiser" | "social" | "youth" | "class";
+  /** Optional association with a masjid from MASJID_REGISTRY for future filtering/sorting. */
+  masjidId?: string;
 };
 
 const STATIC_EVENTS: CommunityEvent[] = [
@@ -97,6 +99,7 @@ const STATIC_EVENTS: CommunityEvent[] = [
     location: "ISTABA — 7326 E. Sligh Ave, Tampa",
     description: "Join us for a weekly circle of Qur'an recitation and reflection. All levels welcome.",
     category: "class",
+    masjidId: "istaba",
   },
   {
     id: "youth-basketball",
@@ -106,6 +109,7 @@ const STATIC_EVENTS: CommunityEvent[] = [
     location: "ISONET Gym — 15830 Morris Bridge Rd, Tampa",
     description: "Weekly co-ed basketball for ages 10–18. Registration required. Contact ISONET for details.",
     category: "youth",
+    masjidId: "isonet",
   },
   {
     id: "masjid-fundraiser",
@@ -115,6 +119,7 @@ const STATIC_EVENTS: CommunityEvent[] = [
     location: "ISTABA Banquet Hall — 7326 E. Sligh Ave, Tampa",
     description: "Support your masjid at our annual fundraising dinner. Live auction, guest speakers, and catered dinner included.",
     category: "fundraiser",
+    masjidId: "istaba",
   },
   {
     id: "jumuah-lecture",
@@ -124,6 +129,7 @@ const STATIC_EVENTS: CommunityEvent[] = [
     location: "Masjid Al-Qassam — 6406 N 56th St, Tampa",
     description: "Guest speaker Sh. Omar Suleiman will deliver the Friday khutbah on building stronger Muslim families.",
     category: "lecture",
+    masjidId: "qassam",
   },
   {
     id: "community-iftar",
@@ -133,6 +139,7 @@ const STATIC_EVENTS: CommunityEvent[] = [
     location: "The Muslim Connection — 8080 N 56th St, Tampa",
     description: "Break bread with your neighbors. Open to all. Bring a dish to share if you can!",
     category: "social",
+    masjidId: "tmc",
   },
   {
     id: "new-muslim",
@@ -142,6 +149,7 @@ const STATIC_EVENTS: CommunityEvent[] = [
     location: "Islamic Center of Brandon — 1006 Victoria St, Brandon",
     description: "A welcoming space for new Muslims to ask questions, connect, and learn at their own pace.",
     category: "class",
+    masjidId: "brndon",
   },
 ];
 

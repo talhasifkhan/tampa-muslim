@@ -1,5 +1,7 @@
 import { Link } from "react-router";
+import { useEffect } from "react";
 import { useTheme } from "../useTheme";
+import { prefetchPrayerTimes } from "../data/csvCache";
 
 const QUOTES = [
   {
@@ -155,6 +157,12 @@ const SECTIONS = [
 
 export default function Landing() {
   const { isDark, toggleTheme } = useTheme();
+
+  // Kick off the CSV fetch while the user reads the landing page so
+  // prayer times are ready (or nearly ready) when they navigate to /app.
+  useEffect(() => {
+    prefetchPrayerTimes();
+  }, []);
   return (
     <div className="layout-container" style={{ paddingBottom: 0 }}>
       <header className="header-top">
