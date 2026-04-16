@@ -542,10 +542,7 @@ export function PrayerTimes({
     <div className="layout-container">
       {/* ── Top Header ── */}
       <header className="header-top">
-        <Link to="/" className="header-brand" style={{ textDecoration: "none" }}>
-          <img src="/favicon/favicon.svg" alt="" className="header-brand__logo" aria-hidden="true" />
-          TampaMuslim.com
-        </Link>
+        <Link to="/" className="header-brand" style={{ textDecoration: "none" }}>TampaMuslim.com</Link>
 
         {/* Desktop Navigation (hidden on mobile) */}
         <nav className="desktop-nav">

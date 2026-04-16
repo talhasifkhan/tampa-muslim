@@ -16,6 +16,20 @@ type ChangeEntry = {
 const CHANGELOG: ChangeEntry[] = [
   {
     date: "April 16, 2026",
+    title: "Logo, Arabic verse & UI refinements",
+    items: [
+      "App logo now appears in the header next to TampaMuslim.com across all pages",
+      "Logo replaces the crescent icon above Assalamu Alaikum on the landing page",
+      "Logo displayed on loading screens above the spinner",
+      "Daily Quran/hadith reminder restored on the landing page with Arabic text and translation",
+      "Arabic script uses Scheherazade New, a font designed for Quranic text",
+      "Restaurants tab width constrained to match events tab on desktop",
+      "Search bar made more prominent with a stronger border, taller input, tinted background, and larger icon",
+      "Favicon and PWA icons replaced with proper assets across all sizes",
+    ],
+  },
+  {
+    date: "April 16, 2026",
     title: "Mobile UI polish & restaurants tab restored",
     items: [
       "Landing page redesigned as a welcome screen — crescent icon, larger greeting, cards no longer span the full screen width on mobile",

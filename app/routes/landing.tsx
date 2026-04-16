@@ -209,11 +209,11 @@ export default function Landing() {
         </div>
         <h2 className="section-title">Assalamu Alaikum</h2>
         <p className="landing-subtitle">What are you looking for?</p>
-        {/* <div className="daily-reminder landing-reminder">
+        <div className="daily-reminder landing-reminder">
           <p className="daily-reminder__arabic">{dailyQuote.arabic}</p>
           <p className="daily-reminder__translation">"{dailyQuote.text}"</p>
           <p className="daily-reminder__reference">— {dailyQuote.source}</p>
-        </div> */}
+        </div>
         <div className="landing-cards-container">
           {SECTIONS.map(({ tab, label, icon }) => (
             <Link key={tab} to={`/app?tab=${tab}`} prefetch="intent" viewTransition className="section-card">
