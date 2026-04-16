@@ -908,6 +908,10 @@ body {
   padding-top: 2rem;
 }
 
+.landing-welcome .section-title {
+  font-size: 2.25rem;
+}
+
 .landing-icon {
   color: #10b981;
   margin-bottom: 0.6rem;
@@ -936,7 +940,7 @@ body {
   }
 
   .landing-welcome .section-title {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     margin-bottom: 0.75rem;
   }
 

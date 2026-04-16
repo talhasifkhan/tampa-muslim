@@ -196,18 +196,17 @@ export default function Landing() {
         </div>
         <h2 className="section-title">Assalamu Alaikum</h2>
         <p className="landing-subtitle">What are you looking for?</p>
-        <div className="daily-reminder landing-reminder">
+        {/* <div className="daily-reminder landing-reminder">
           <p className="daily-reminder__arabic">{dailyQuote.arabic}</p>
           <p className="daily-reminder__translation">"{dailyQuote.text}"</p>
           <p className="daily-reminder__reference">— {dailyQuote.source}</p>
-        </div>
+        </div> */}
         <div className="landing-cards-container">
-          {SECTIONS.map(({ tab, label, description, icon }) => (
+          {SECTIONS.map(({ tab, label, icon }) => (
             <Link key={tab} to={`/app?tab=${tab}`} prefetch="intent" viewTransition className="section-card">
               <span className="section-card__icon">{icon}</span>
               <div style={{ flex: 1 }}>
                 <div className="section-card__label">{label}</div>
-                <div className="section-card__desc">{description}</div>
               </div>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="section-card__chevron" aria-hidden="true">
                 <polyline points="9 18 15 12 9 6" />
