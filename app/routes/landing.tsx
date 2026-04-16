@@ -188,15 +188,20 @@ export default function Landing() {
           )}
         </button>
       </header>
-      <main className="main-content">
+      <main className="main-content landing-welcome">
+        <div className="landing-icon" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </div>
         <h2 className="section-title">Assalamu Alaikum</h2>
         <p className="landing-subtitle">What are you looking for?</p>
-        <div className="daily-reminder" style={{ maxWidth: "500px", margin: "0 auto 1.5rem", width: "100%" }}>
+        <div className="daily-reminder landing-reminder">
           <p className="daily-reminder__arabic">{dailyQuote.arabic}</p>
           <p className="daily-reminder__translation">"{dailyQuote.text}"</p>
           <p className="daily-reminder__reference">— {dailyQuote.source}</p>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxWidth: "500px", margin: "0 auto", width: "100%" }}>
+        <div className="landing-cards-container">
           {SECTIONS.map(({ tab, label, description, icon }) => (
             <Link key={tab} to={`/app?tab=${tab}`} prefetch="intent" viewTransition className="section-card">
               <span className="section-card__icon">{icon}</span>
@@ -210,7 +215,7 @@ export default function Landing() {
             </Link>
           ))}
         </div>
-        <div style={{ textAlign: "center", marginTop: "2rem" }}>
+        <div style={{ textAlign: "center", marginTop: "1.75rem" }}>
           <Link to="/changelog" prefetch="intent" viewTransition className="landing-changelog-link">
             View changelog
           </Link>

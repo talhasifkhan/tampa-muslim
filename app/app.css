@@ -900,6 +900,64 @@ body {
   padding: 0.5rem 1rem;
 }
 
+/* ── Landing Welcome Layout ── */
+.landing-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.landing-icon {
+  color: #10b981;
+  margin-bottom: 0.6rem;
+  opacity: 0.9;
+}
+
+.landing-reminder {
+  max-width: 440px;
+  margin: 0 auto 1.5rem;
+  width: 100%;
+}
+
+.landing-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Mobile: scale down and constrain card width */
+@media (max-width: 480px) {
+  .landing-welcome {
+    padding-top: 1.5rem;
+  }
+
+  .landing-welcome .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .landing-welcome .landing-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .landing-reminder {
+    max-width: 300px;
+  }
+
+  .landing-cards-container {
+    max-width: 300px;
+  }
+
+  .landing-cards-container .section-card {
+    padding: 0.85rem 0.9rem;
+  }
+}
+
 /* ── Dark Mode ──
    Neutral grays matching Claude's dark UI (~#1e1e1e base)
    ──────────────────────────────────────────────────────── */
@@ -957,6 +1015,10 @@ html[data-theme="dark"] .section-card__chevron {
 
 html[data-theme="dark"] .landing-changelog-link {
   color: #888;
+}
+
+html[data-theme="dark"] .landing-icon {
+  color: #10b981;
 }
 
 html[data-theme="dark"] .masjid-search__input {
