@@ -923,9 +923,13 @@ body {
 }
 
 .landing-icon {
-  color: #10b981;
   margin-bottom: 0.6rem;
-  opacity: 0.9;
+}
+
+.landing-icon__logo {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 14px;
 }
 
 .landing-reminder {
@@ -1031,9 +1035,7 @@ html[data-theme="dark"] .landing-changelog-link {
   color: #888;
 }
 
-html[data-theme="dark"] .landing-icon {
-  color: #10b981;
-}
+
 
 html[data-theme="dark"] .masjid-search__input {
   background: #282828;

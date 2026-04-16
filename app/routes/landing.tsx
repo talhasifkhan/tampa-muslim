@@ -205,9 +205,7 @@ export default function Landing() {
       </header>
       <main className="main-content landing-welcome">
         <div className="landing-icon" aria-hidden="true">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
+          <img src="/favicon/favicon.svg" alt="" className="landing-icon__logo" />
         </div>
         <h2 className="section-title">Assalamu Alaikum</h2>
         <p className="landing-subtitle">What are you looking for?</p>
