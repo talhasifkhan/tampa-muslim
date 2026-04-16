@@ -553,16 +553,16 @@ export function PrayerTimes({
             Prayer Times
           </button>
           <button
-            className={`desktop-nav__tab ${activeTab === "restaurants" ? "desktop-nav__tab--active" : ""}`}
-            onClick={() => setActiveTab("restaurants")}
-          >
-            Restaurants
-          </button>
-          <button
             className={`desktop-nav__tab ${activeTab === "events" ? "desktop-nav__tab--active" : ""}`}
             onClick={() => setActiveTab("events")}
           >
             Events
+          </button>
+          <button
+            className={`desktop-nav__tab ${activeTab === "restaurants" ? "desktop-nav__tab--active" : ""}`}
+            onClick={() => setActiveTab("restaurants")}
+          >
+            Restaurants
           </button>
           <button
             className={`desktop-nav__tab ${activeTab === "about" ? "desktop-nav__tab--active" : ""}`}
@@ -841,15 +841,6 @@ export function PrayerTimes({
           Prayer Times
         </button>
         <button
-          className={`nav-tab ${activeTab === "restaurants" ? "nav-tab--active" : ""}`}
-          onClick={() => setActiveTab("restaurants")}
-        >
-          <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><line x1="7" y1="2" x2="7" y2="22"></line><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h1"></path><line x1="21" y1="15" x2="21" y2="22"></line>
-          </svg>
-          Restaurants
-        </button>
-        <button
           className={`nav-tab ${activeTab === "events" ? "nav-tab--active" : ""}`}
           onClick={() => setActiveTab("events")}
         >
@@ -857,6 +848,15 @@ export function PrayerTimes({
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
           Events
+        </button>
+        <button
+          className={`nav-tab ${activeTab === "restaurants" ? "nav-tab--active" : ""}`}
+          onClick={() => setActiveTab("restaurants")}
+        >
+          <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><line x1="7" y1="2" x2="7" y2="22"></line><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h1"></path><line x1="21" y1="15" x2="21" y2="22"></line>
+          </svg>
+          Restaurants
         </button>
         <button
           className={`nav-tab ${activeTab === "about" ? "nav-tab--active" : ""}`}

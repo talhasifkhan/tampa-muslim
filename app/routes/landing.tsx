@@ -129,18 +129,6 @@ const SECTIONS = [
     ),
   },
   {
-    tab: "restaurants",
-    label: "Halal Restaurants",
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-        <line x1="7" y1="2" x2="7" y2="22" />
-        <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h1" />
-        <line x1="21" y1="15" x2="21" y2="22" />
-      </svg>
-    ),
-  },
-  {
     tab: "events",
     label: "Community Events",
     description: "Lectures, classes & social gatherings",
@@ -150,6 +138,18 @@ const SECTIONS = [
         <line x1="16" y1="2" x2="16" y2="6" />
         <line x1="8" y1="2" x2="8" y2="6" />
         <line x1="3" y1="10" x2="21" y2="10" />
+      </svg>
+    ),
+  },
+  {
+    tab: "restaurants",
+    label: "Halal Restaurants",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+        <line x1="7" y1="2" x2="7" y2="22" />
+        <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h1" />
+        <line x1="21" y1="15" x2="21" y2="22" />
       </svg>
     ),
   },
