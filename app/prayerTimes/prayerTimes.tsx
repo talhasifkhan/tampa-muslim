@@ -532,9 +532,11 @@ export function PrayerTimes({
   const headingTitle =
     activeTab === "prayers"
       ? "Prayer Times"
-      : activeTab === "events"
-        ? "Community Events"
-        : "About TampaMuslim";
+      : activeTab === "restaurants"
+        ? "Halal Restaurants"
+        : activeTab === "events"
+          ? "Community Events"
+          : "About TampaMuslim";
 
   return (
     <div className="layout-container">
@@ -549,6 +551,12 @@ export function PrayerTimes({
             onClick={() => setActiveTab("prayers")}
           >
             Prayer Times
+          </button>
+          <button
+            className={`desktop-nav__tab ${activeTab === "restaurants" ? "desktop-nav__tab--active" : ""}`}
+            onClick={() => setActiveTab("restaurants")}
+          >
+            Restaurants
           </button>
           <button
             className={`desktop-nav__tab ${activeTab === "events" ? "desktop-nav__tab--active" : ""}`}
@@ -786,6 +794,30 @@ export function PrayerTimes({
           </div>
         )}
 
+        {activeTab === "restaurants" && (
+          <div className="tab-content restaurant-view">
+            <p className="dummy-data-notice">⚠️ Restaurants listed are sample data and may not reflect current halal status or hours.</p>
+            <div className="restaurant-list">
+              {filteredRestaurants.map((r) => (
+                <div key={r.id} className="restaurant-card">
+                  <div className="restaurant-card__image-container">
+                    <img src={r.image} alt={r.name} className="restaurant-card__image" loading="lazy" />
+                  </div>
+                  <div className="restaurant-card__content">
+                    <div className="restaurant-card__info">
+                      <span className="restaurant-card__cuisine">{r.cuisine}</span>
+                      <h3 className="restaurant-card__name">{r.name}</h3>
+                      <div className="restaurant-card__meta">
+                        <span className="restaurant-card__address">{r.address}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {activeTab === "about" && (
           <div className="empty-state">
             <p>
@@ -807,6 +839,15 @@ export function PrayerTimes({
             <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
           </svg>
           Prayer Times
+        </button>
+        <button
+          className={`nav-tab ${activeTab === "restaurants" ? "nav-tab--active" : ""}`}
+          onClick={() => setActiveTab("restaurants")}
+        >
+          <svg className="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><line x1="7" y1="2" x2="7" y2="22"></line><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h1"></path><line x1="21" y1="15" x2="21" y2="22"></line>
+          </svg>
+          Restaurants
         </button>
         <button
           className={`nav-tab ${activeTab === "events" ? "nav-tab--active" : ""}`}
