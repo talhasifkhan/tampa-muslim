@@ -22,7 +22,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" type="image/svg+xml" href="/icon.svg" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/icon.svg" />
+        <link rel="apple-touch-icon" href="/icon-192.png" />
         <Meta />
         <Links />
         {/* Prevent flash of wrong theme on load */}
