@@ -47,6 +47,16 @@ body {
   letter-spacing: -0.02em;
   color: #0f172a;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.header-brand__logo {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 6px;
+  flex-shrink: 0;
 }
 
 /* Desktop Nav (hidden on mobile) */
@@ -1230,6 +1240,12 @@ html[data-theme="dark"] .theme-toggle-btn:hover {
   font-weight: 400;
   color: #64748b;
   letter-spacing: 0.01em;
+}
+
+.page-loader__logo {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 12px;
 }
 
 .page-loader__spinner {

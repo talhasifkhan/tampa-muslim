@@ -178,7 +178,10 @@ export default function Landing() {
   return (
     <div className="layout-container" style={{ paddingBottom: 0 }}>
       <header className="header-top">
-        <h1 className="header-brand">TampaMuslim.com</h1>
+        <h1 className="header-brand">
+          <img src="/favicon/favicon.svg" alt="" className="header-brand__logo" aria-hidden="true" />
+          TampaMuslim.com
+        </h1>
         <button
           type="button"
           className="theme-toggle-btn"

@@ -41,6 +41,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export function HydrateFallback() {
   return (
     <div className="page-loader">
+      <img src="/favicon/favicon.svg" alt="" className="page-loader__logo" aria-hidden="true" />
       <div className="page-loader__spinner" aria-hidden="true" />
       <span className="page-loader__label">Loading prayer times…</span>
     </div>
@@ -52,6 +53,7 @@ function PageLoader() {
   if (navigation.state === "idle") return null;
   return (
     <div className="page-loader">
+      <img src="/favicon/favicon.svg" alt="" className="page-loader__logo" aria-hidden="true" />
       <div className="page-loader__spinner" aria-hidden="true" />
       <span className="page-loader__label">Loading prayer times…</span>
     </div>

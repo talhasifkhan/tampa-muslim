@@ -248,6 +248,7 @@ export default function Admin({ loaderData }: Route.ComponentProps) {
     <div className="layout-container" style={{ paddingBottom: 0 }}>
       <header className="header-top">
         <Link to="/" viewTransition className="header-brand" style={{ textDecoration: "none" }}>
+          <img src="/favicon/favicon.svg" alt="" className="header-brand__logo" aria-hidden="true" />
           TampaMuslim.com
         </Link>
         <button
