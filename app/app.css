@@ -31,7 +31,7 @@ body {
 
 /* ── Top Header ── */
 .header-top {
-  padding: 1.25rem 1rem 1rem;
+  padding: 1.25rem 1.5rem 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,8 +76,7 @@ body {
 /* ── Main Content Area ── */
 .main-content {
   flex: 1;
-  /* Fit entirely on mobile screen without scroll */
-  padding: 1rem 1.5rem; 
+  padding: 1.5rem 2rem;
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
@@ -936,7 +935,7 @@ body {
 /* Mobile: scale down and constrain card width */
 @media (max-width: 480px) {
   .landing-welcome {
-    padding-top: 1.5rem;
+    padding-top: 2rem;
   }
 
   .landing-welcome .section-title {
