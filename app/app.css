@@ -10,7 +10,7 @@
 
 html,
 body {
-  @apply bg-white; /* stark white background */
+  background-color: #f8f9fa;
   font-family: var(--font-sans);
   font-weight: 300; /* lighter default weight */
   color: #1e293b;
