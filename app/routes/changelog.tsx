@@ -26,6 +26,19 @@ const CHANGELOG: ChangeEntry[] = [
     ],
   },
   {
+    date: "April 15, 2026",
+    title: "Icon, spinner & desktop layout improvements",
+    items: [
+      "Replaced default favicon with a custom TM SVG icon (green, rounded corners) — shows in browser tabs and on the home screen",
+      "Removed legacy favicon.ico so the SVG icon takes effect in all browsers",
+      "PWA manifest updated to reference the new SVG icon",
+      "Replaced the thin navigation loading bar with a centered spinner overlay for clearer feedback during page loads",
+      "Desktop nav tabs are now properly centered in the header via absolute positioning",
+      "Events list and sample data warning are constrained to 720px on desktop for better readability",
+      "Prayer times CSV fetch now starts in the background while the landing page loads, so times are ready sooner",
+    ],
+  },
+  {
     date: "April 14, 2026",
     title: "Performance, PWA support & animations",
     items: [
