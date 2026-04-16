@@ -15,6 +15,17 @@ type ChangeEntry = {
 
 const CHANGELOG: ChangeEntry[] = [
   {
+    date: "April 16, 2026",
+    title: "Mobile UI polish & restaurants tab restored",
+    items: [
+      "Landing page redesigned as a welcome screen — crescent icon, larger greeting, cards no longer span the full screen width on mobile",
+      "Restaurants tab restored with halal dining listings and a sample data notice matching the events tab",
+      "Nav card subtitles removed for a cleaner look; daily reminder verse hidden for now",
+      "Increased padding throughout on mobile so the layout feels less cramped",
+      "Page background softened from pure white to a subtle off-white (#f8f9fa) in light mode",
+    ],
+  },
+  {
     date: "April 14, 2026",
     title: "Performance, PWA support & animations",
     items: [
