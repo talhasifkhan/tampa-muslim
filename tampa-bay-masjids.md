@@ -37,7 +37,7 @@ Purpose: Review list before adding to TampaMuslim.com
 
 | # | Name | ID | Address | Lat (approx) | Lng (approx) | Website |
 |---|------|----|---------|-------------|-------------|---------|
-| 8 | Masjid Abu Bakr As-Siddiq | `abubakr` | 11010 N 30th St, Tampa, FL 33612 | 28.0520 | -82.4590 | https://masjedabubakr.com/ |
+| 8 | Masjid Abu Bakr | `abubakr` | 11010 N 30th St, Tampa, FL 33612 | 28.0520 | -82.4590 | https://masjedabubakr.com/ |
 | 9 | Masjid Omar Al Mokhtar | `omaralmokhtar` | 1307 W North B St, Tampa, FL 33606 | 27.9510 | -82.4660 | https://masjidomaralmokhtar.org/ |
 | 10 | Masjid Al Ansar | `alansar` | 4334 W Waters Ave, Tampa, FL 33614 | 28.0290 | -82.5080 | — |
 | 11 | Barkallah Islamic Community Center | `barkallah` | 916 York Dr, Brandon, FL 33510 | 27.9350 | -82.2980 | https://barkallahtampa.org/ |
@@ -49,7 +49,8 @@ Purpose: Review list before adding to TampaMuslim.com
 
 | # | Name | ID | Address | Lat (approx) | Lng (approx) | Website |
 |---|------|----|---------|-------------|-------------|---------|
-| 13 | Masjid An-Noor / Islamic Community of Wesley Chapel | `annoor` | 2250 Ashley Oaks Cir #101, Wesley Chapel, FL 33544 | 28.2110 | -82.3500 | https://wesleychapelmasjid.org/ |
+| 13 | Islamic Community of Wesley Chapel (Masjid Ibrahim) | `icwc` | 19130 Livingston Ave, Lutz, FL 33559 | 28.1750 | -82.4680 | https://icwc.us/ |
+| 14 | Masjid An-Noor | `annoor` | 2250 Ashley Oaks Cir #101, Wesley Chapel, FL 33544 | 28.2110 | -82.3500 | https://wesleychapelmasjid.org/ |
 
 ---
 

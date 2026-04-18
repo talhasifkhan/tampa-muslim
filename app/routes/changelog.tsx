@@ -15,6 +15,22 @@ type ChangeEntry = {
 
 const CHANGELOG: ChangeEntry[] = [
   {
+    date: "April 18, 2026",
+    title: "UI polish, animations & typography refines",
+    items: [
+      "Sorted filtering options in the Events tab now dynamically stretch to match the width of the event cards",
+      "Added a smooth pop-up entrance animation to the events calendar modal",
+      "Calendar modal background now elegantly fades into a darker, true black overlay",
+      "Prayer cards feature proportionally larger prayer names and smaller times for clearer typographic hierarchy",
+      "Unified and slightly increased internal padding on prayer cards for a cleaner layout",
+      "Added the TampaMuslim application logo to the main header on all internal pages",
+      "Restructured 'Clear date' buttons to dock gracefully next to the primary pickers to reduce empty-state footprint",
+      "Reverted color-inverted date picking states in favor of an elegant Emerald hue matched to your system's Light/Dark theme",
+      "Introduced Cuisine filtering and distance/alphabetical sorting to the Halal Restaurants tab",
+      "Redesigned the About tab to display features in individually isolated, highly-readable aesthetic cards",
+    ],
+  },
+  {
     date: "April 16, 2026",
     title: "Logo, Arabic verse & UI refinements",
     items: [

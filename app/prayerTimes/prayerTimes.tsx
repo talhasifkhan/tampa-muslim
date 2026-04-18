@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router";
 import { useTheme } from "../useTheme";
 import { MASJID_REGISTRY } from "../data/masjids";
@@ -78,15 +79,21 @@ const STATIC_RESTAURANT_INFO: Restaurant[] = [
 ];
 
 /* ────────── Static Events Data ────────── */
+type EventCategory = "lecture" | "fundraiser" | "social" | "youth" | "class";
+
 type CommunityEvent = {
   id: string;
   title: string;
-  date: string;
+  date: string; // human-readable display (may describe recurrence)
+  /** ISO date (YYYY-MM-DD) of the next occurrence, used for sorting and calendar placement. */
+  startDate: string;
+  /** When set, the event repeats; calendar view expands these into per-day dots. */
+  recurrence?: "weekly" | "biweekly";
   time: string;
   location: string;
   description: string;
-  category: "lecture" | "fundraiser" | "social" | "youth" | "class";
-  /** Optional association with a masjid from MASJID_REGISTRY for future filtering/sorting. */
+  category: EventCategory;
+  /** Optional association with a masjid from MASJID_REGISTRY for filtering. */
   masjidId?: string;
 };
 
@@ -95,6 +102,8 @@ const STATIC_EVENTS: CommunityEvent[] = [
     id: "halaqa-apr",
     title: "Weekly Halaqa & Qur'an Study",
     date: "Every Sunday",
+    startDate: "2026-04-19",
+    recurrence: "weekly",
     time: "After Fajr",
     location: "ISTABA — 7326 E. Sligh Ave, Tampa",
     description: "Join us for a weekly circle of Qur'an recitation and reflection. All levels welcome.",
@@ -104,7 +113,9 @@ const STATIC_EVENTS: CommunityEvent[] = [
   {
     id: "youth-basketball",
     title: "Muslim Youth Basketball League",
-    date: "Saturdays, Apr 12 – May 31",
+    date: "Saturdays, Apr 18 – May 30",
+    startDate: "2026-04-18",
+    recurrence: "weekly",
     time: "10:00 AM – 12:00 PM",
     location: "ISONET Gym — 15830 Morris Bridge Rd, Tampa",
     description: "Weekly co-ed basketball for ages 10–18. Registration required. Contact ISONET for details.",
@@ -114,7 +125,8 @@ const STATIC_EVENTS: CommunityEvent[] = [
   {
     id: "masjid-fundraiser",
     title: "ISTABA Annual Fundraiser Dinner",
-    date: "Saturday, Apr 19",
+    date: "Saturday, Apr 25",
+    startDate: "2026-04-25",
     time: "6:30 PM",
     location: "ISTABA Banquet Hall — 7326 E. Sligh Ave, Tampa",
     description: "Support your masjid at our annual fundraising dinner. Live auction, guest speakers, and catered dinner included.",
@@ -124,7 +136,8 @@ const STATIC_EVENTS: CommunityEvent[] = [
   {
     id: "jumuah-lecture",
     title: "Friday Khutbah: Strengthening Family Bonds",
-    date: "Friday, Apr 25",
+    date: "Friday, Apr 24",
+    startDate: "2026-04-24",
     time: "1:15 PM",
     location: "Masjid Al-Qassam — 6406 N 56th St, Tampa",
     description: "Guest speaker Sh. Omar Suleiman will deliver the Friday khutbah on building stronger Muslim families.",
@@ -134,7 +147,8 @@ const STATIC_EVENTS: CommunityEvent[] = [
   {
     id: "community-iftar",
     title: "Community Iftar & Networking Night",
-    date: "Saturday, May 3",
+    date: "Saturday, May 2",
+    startDate: "2026-05-02",
     time: "Maghrib (approx. 7:45 PM)",
     location: "The Muslim Connection — 8080 N 56th St, Tampa",
     description: "Break bread with your neighbors. Open to all. Bring a dish to share if you can!",
@@ -144,22 +158,205 @@ const STATIC_EVENTS: CommunityEvent[] = [
   {
     id: "new-muslim",
     title: "New Muslim Support Group",
-    date: "Every 2nd & 4th Wednesday",
+    date: "Every other Wednesday",
+    startDate: "2026-04-22",
+    recurrence: "biweekly",
     time: "7:00 PM",
     location: "Islamic Center of Brandon — 1006 Victoria St, Brandon",
     description: "A welcoming space for new Muslims to ask questions, connect, and learn at their own pace.",
     category: "class",
     masjidId: "brndon",
   },
+  {
+    id: "sisters-halaqa",
+    title: "Sisters' Halaqa: Tafsir of Surah Yusuf",
+    date: "Saturday, May 9",
+    startDate: "2026-05-09",
+    time: "11:00 AM",
+    location: "Masjid An-Noor — Tampa",
+    description: "Monthly sisters-only study circle exploring the lessons of Surah Yusuf.",
+    category: "class",
+    masjidId: "annoor",
+  },
+  {
+    id: "youth-game-night",
+    title: "Youth Game Night & Pizza",
+    date: "Friday, May 8",
+    startDate: "2026-05-08",
+    time: "7:30 PM",
+    location: "Islamic Society of Riverview Area (ISRA)",
+    description: "Board games, pizza, and good company. Open to teens & young adults.",
+    category: "youth",
+    masjidId: "isra",
+  },
 ];
 
-const EVENT_CATEGORY_LABELS: Record<CommunityEvent["category"], string> = {
+const EVENT_CATEGORY_LABELS: Record<EventCategory, string> = {
   lecture: "Lecture",
   fundraiser: "Fundraiser",
   social: "Community",
   youth: "Youth",
   class: "Class / Study",
 };
+
+const EVENT_CATEGORY_ORDER: EventCategory[] = [
+  "lecture",
+  "class",
+  "youth",
+  "social",
+  "fundraiser",
+];
+
+/* ────────── Event date helpers ────────── */
+function parseYmd(ymd: string): Date {
+  const [y, m, d] = ymd.split("-").map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function formatYmd(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+/** Returns whether a (possibly recurring) event has an occurrence on `ymd`. */
+function eventOccursOn(event: CommunityEvent, ymd: string): boolean {
+  const target = parseYmd(ymd);
+  const start = parseYmd(event.startDate);
+  if (target < start) return false;
+  if (!event.recurrence) return event.startDate === ymd;
+  const diffDays = Math.round((target.getTime() - start.getTime()) / 86_400_000);
+  const step = event.recurrence === "weekly" ? 7 : 14;
+  return diffDays % step === 0;
+}
+
+/** Returns the next occurrence date (YYYY-MM-DD) on or after `fromYmd`, or null. */
+function nextOccurrenceFrom(event: CommunityEvent, fromYmd: string): string | null {
+  const from = parseYmd(fromYmd);
+  const start = parseYmd(event.startDate);
+  if (!event.recurrence) {
+    return start >= from ? event.startDate : null;
+  }
+  const step = event.recurrence === "weekly" ? 7 : 14;
+  if (start >= from) return event.startDate;
+  const diffDays = Math.ceil((from.getTime() - start.getTime()) / 86_400_000);
+  const stepsAhead = Math.ceil(diffDays / step);
+  const next = new Date(start);
+  next.setDate(start.getDate() + stepsAhead * step);
+  return formatYmd(next);
+}
+
+const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+const WEEKDAY_HEADERS = ["S", "M", "T", "W", "T", "F", "S"];
+
+/* ────────── Event Calendar ────────── */
+function EventCalendar({
+  year,
+  month,
+  events,
+  selectedDate,
+  onSelectDate,
+  onPrevMonth,
+  onNextMonth,
+}: {
+  year: number;
+  month: number; // 0-indexed
+  events: CommunityEvent[];
+  selectedDate: string | null;
+  onSelectDate: (ymd: string | null) => void;
+  onPrevMonth: () => void;
+  onNextMonth: () => void;
+}) {
+  const todayYmd = formatYmd(new Date());
+  const firstOfMonth = new Date(year, month, 1);
+  const startWeekday = firstOfMonth.getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const cells: Array<{ ymd: string; day: number } | null> = [];
+  for (let i = 0; i < startWeekday; i++) cells.push(null);
+  for (let d = 1; d <= daysInMonth; d++) {
+    cells.push({ ymd: formatYmd(new Date(year, month, d)), day: d });
+  }
+  while (cells.length % 7 !== 0) cells.push(null);
+
+  return (
+    <div className="event-calendar">
+      <div className="event-calendar__header">
+        <button
+          type="button"
+          className="event-calendar__nav"
+          onClick={onPrevMonth}
+          aria-label="Previous month"
+        >
+          ‹
+        </button>
+        <span className="event-calendar__title">
+          {MONTH_NAMES[month]} {year}
+        </span>
+        <button
+          type="button"
+          className="event-calendar__nav"
+          onClick={onNextMonth}
+          aria-label="Next month"
+        >
+          ›
+        </button>
+      </div>
+
+      <div className="event-calendar__weekdays">
+        {WEEKDAY_HEADERS.map((w, i) => (
+          <span key={i} className="event-calendar__weekday">{w}</span>
+        ))}
+      </div>
+
+      <div className="event-calendar__grid">
+        {cells.map((cell, idx) => {
+          if (!cell) return <div key={idx} className="event-calendar__cell event-calendar__cell--empty" />;
+          const dayEvents = events.filter((e) => eventOccursOn(e, cell.ymd));
+          const categories = Array.from(new Set(dayEvents.map((e) => e.category)));
+          const isSelected = selectedDate === cell.ymd;
+          const isToday = cell.ymd === todayYmd;
+          return (
+            <button
+              key={idx}
+              type="button"
+              className={`event-calendar__cell${isSelected ? " event-calendar__cell--selected" : ""}${isToday ? " event-calendar__cell--today" : ""}${dayEvents.length ? " event-calendar__cell--has-events" : ""}`}
+              onClick={() => onSelectDate(isSelected ? null : cell.ymd)}
+              aria-pressed={isSelected}
+              aria-label={`${cell.day}${dayEvents.length ? ` — ${dayEvents.length} event${dayEvents.length === 1 ? "" : "s"}` : ""}`}
+            >
+              <span className="event-calendar__day">{cell.day}</span>
+              {categories.length > 0 && (
+                <span className="event-calendar__dots">
+                  {categories.slice(0, 3).map((cat) => (
+                    <span
+                      key={cat}
+                      className={`event-calendar__dot event-calendar__dot--${cat}`}
+                    />
+                  ))}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function formatSelectedDate(ymd: string): string {
+  const d = parseYmd(ymd);
+  return d.toLocaleDateString(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+}
 
 const PRAYER_ORDER: PrayerName[] = [
   "Fajr",
@@ -304,8 +501,61 @@ export function PrayerTimes({
 
   /* ── restaurant state ── */
   const [restaurantSearchQuery, setRestaurantSearchQuery] = useState("");
+  const [restaurantSort, setRestaurantSort] = useState<"name" | "distance">("name");
+  const [restaurantCuisineFilter, setRestaurantCuisineFilter] = useState<string>("");
   const [restaurantLocateStatus, setRestaurantLocateStatus] = useState<"idle" | "loading" | "found" | "denied" | "unavailable">("idle");
   const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null);
+
+  /* ── event filter / sort state ── */
+  const [eventSort, setEventSort] = useState<"upcoming" | "masjid" | "category">("upcoming");
+  const [eventCategoryFilter, setEventCategoryFilter] = useState<EventCategory | "">("");
+  const [eventSelectedDate, setEventSelectedDate] = useState<string | null>(null);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [eventCalendarMonth, setEventCalendarMonth] = useState<{ year: number; month: number }>(() => {
+    const n = new Date();
+    return { year: n.getFullYear(), month: n.getMonth() };
+  });
+
+  const filteredEvents = useMemo(() => {
+    const todayYmd = formatYmd(new Date());
+    let list = STATIC_EVENTS.slice();
+
+    if (eventCategoryFilter) {
+      list = list.filter((e) => e.category === eventCategoryFilter);
+    }
+    if (eventSelectedDate) {
+      list = list.filter((e) => eventOccursOn(e, eventSelectedDate));
+    }
+
+    if (eventSort === "upcoming") {
+      list.sort((a, b) => {
+        const ref = eventSelectedDate ?? todayYmd;
+        const na = nextOccurrenceFrom(a, ref) ?? a.startDate;
+        const nb = nextOccurrenceFrom(b, ref) ?? b.startDate;
+        return na.localeCompare(nb);
+      });
+    } else if (eventSort === "masjid") {
+      const masjidName = (id?: string) =>
+        MASJID_REGISTRY.find((m) => m.id === id)?.name ?? "";
+      list.sort((a, b) => masjidName(a.masjidId).localeCompare(masjidName(b.masjidId)));
+    } else if (eventSort === "category") {
+      list.sort((a, b) => {
+        const ca = EVENT_CATEGORY_ORDER.indexOf(a.category);
+        const cb = EVENT_CATEGORY_ORDER.indexOf(b.category);
+        if (ca !== cb) return ca - cb;
+        return a.startDate.localeCompare(b.startDate);
+      });
+    }
+
+    return list;
+  }, [eventCategoryFilter, eventSelectedDate, eventSort]);
+
+  const shiftEventCalendar = useCallback((delta: number) => {
+    setEventCalendarMonth((prev) => {
+      const d = new Date(prev.year, prev.month + delta, 1);
+      return { year: d.getFullYear(), month: d.getMonth() };
+    });
+  }, []);
 
   // Memoized restaurant list
   const filteredRestaurants = useMemo(() => {
@@ -316,7 +566,11 @@ export function PrayerTimes({
       list = list.filter(r => r.name.toLowerCase().includes(q) || r.cuisine.toLowerCase().includes(q));
     }
 
-    if (userLocation) {
+    if (restaurantCuisineFilter) {
+      list = list.filter(r => r.cuisine === restaurantCuisineFilter);
+    }
+
+    if (restaurantSort === "distance" && userLocation) {
       // sort by distance
       list.sort((a, b) => {
         const distA = haversineDistance(userLocation.lat, userLocation.lng, a.lat, a.lng);
@@ -329,7 +583,7 @@ export function PrayerTimes({
     }
 
     return list;
-  }, [restaurantSearchQuery, userLocation]);
+  }, [restaurantSearchQuery, userLocation, restaurantCuisineFilter, restaurantSort]);
 
   const handleRestaurantFindClosest = useCallback(() => {
     if (!navigator.geolocation) {
@@ -342,6 +596,7 @@ export function PrayerTimes({
       (pos) => {
         setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
         setRestaurantLocateStatus("found");
+        setRestaurantSort("distance");
       },
       (err) => {
         if (err.code === err.PERMISSION_DENIED) {
@@ -542,7 +797,10 @@ export function PrayerTimes({
     <div className="layout-container">
       {/* ── Top Header ── */}
       <header className="header-top">
-        <Link to="/" className="header-brand" style={{ textDecoration: "none" }}>TampaMuslim.com</Link>
+        <Link to="/" className="header-brand" style={{ textDecoration: "none" }}>
+          <img src="/favicon/favicon.svg" alt="" className="header-brand__logo" aria-hidden="true" />
+          TampaMuslim.com
+        </Link>
 
         {/* Desktop Navigation (hidden on mobile) */}
         <nav className="desktop-nav">
@@ -758,38 +1016,149 @@ export function PrayerTimes({
         {activeTab === "events" && (
           <div className="tab-content event-view">
             <p className="dummy-data-notice">⚠️ Events listed are sample data and may not reflect real community events.</p>
-            <div className="event-list">
-              {STATIC_EVENTS.map((event) => (
-                <div key={event.id} className="event-card">
-                  <div className="event-card__header">
-                    <span className={`event-card__category event-card__category--${event.category}`}>
-                      {EVENT_CATEGORY_LABELS[event.category]}
-                    </span>
-                    <h3 className="event-card__title">{event.title}</h3>
-                  </div>
-                  <div className="event-card__meta">
-                    <span className="event-card__meta-row">
-                      <svg className="event-card__meta-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fillRule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clipRule="evenodd" />
-                      </svg>
-                      {event.date}
-                    </span>
-                    <span className="event-card__meta-row">
-                      <svg className="event-card__meta-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clipRule="evenodd" />
-                      </svg>
-                      {event.time}
-                    </span>
-                    <span className="event-card__meta-row">
-                      <svg className="event-card__meta-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fillRule="evenodd" d="m9.69 18.933.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 0 0 .281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 1 0 3 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 0 0 2.273 1.765 11.842 11.842 0 0 0 .976.544l.062.029.018.008.006.003ZM10 11.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" clipRule="evenodd" />
-                      </svg>
-                      {event.location}
-                    </span>
-                  </div>
-                  <p className="event-card__description">{event.description}</p>
+
+            <div className="event-controls">
+              <div className="event-controls__row">
+                <label className="event-select">
+                  <span className="event-select__label">Sort</span>
+                  <select
+                    value={eventSort}
+                    onChange={(e) => setEventSort(e.target.value as typeof eventSort)}
+                  >
+                    <option value="upcoming">Most Recent</option>
+                    <option value="masjid">By Masjid</option>
+                    <option value="category">By Category</option>
+                  </select>
+                </label>
+
+                <label className="event-select">
+                  <span className="event-select__label">Filter by</span>
+                  <select
+                    value={eventCategoryFilter}
+                    onChange={(e) => setEventCategoryFilter(e.target.value as EventCategory | "")}
+                  >
+                    <option value="">All categories</option>
+                    {EVENT_CATEGORY_ORDER.map((cat) => (
+                      <option key={cat} value={cat}>{EVENT_CATEGORY_LABELS[cat]}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <div className="event-calendar-btn-group">
+                  <button
+                    type="button"
+                    className={`event-calendar-btn${eventSelectedDate ? " event-calendar-btn--active" : ""}`}
+                    onClick={() => setIsCalendarOpen(true)}
+                    aria-label="Filter by date"
+                  >
+                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" width="16" height="16">
+                      <path fillRule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clipRule="evenodd" />
+                    </svg>
+                    {eventSelectedDate ? formatSelectedDate(eventSelectedDate) : "Pick a date"}
+                  </button>
+                  {eventSelectedDate && (
+                    <button
+                      type="button"
+                      className="event-calendar-clear-btn"
+                      onClick={() => setEventSelectedDate(null)}
+                      title="Clear date filter"
+                      aria-label="Clear date filter"
+                    >
+                      ×
+                    </button>
+                  )}
                 </div>
-              ))}
+              </div>
+            </div>
+
+            {isCalendarOpen && typeof document !== "undefined" && createPortal(
+              <div
+                className="event-calendar-modal"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Pick a date"
+                onClick={() => setIsCalendarOpen(false)}
+              >
+                <div
+                  className="event-calendar-modal__content"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="event-calendar-modal__head">
+                    <span className="event-calendar-modal__title">Filter by date</span>
+                    <button
+                      type="button"
+                      className="event-calendar-modal__close"
+                      onClick={() => setIsCalendarOpen(false)}
+                      aria-label="Close"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <EventCalendar
+                    year={eventCalendarMonth.year}
+                    month={eventCalendarMonth.month}
+                    events={STATIC_EVENTS}
+                    selectedDate={eventSelectedDate}
+                    onSelectDate={(ymd) => {
+                      setEventSelectedDate(ymd);
+                      setIsCalendarOpen(false);
+                    }}
+                    onPrevMonth={() => shiftEventCalendar(-1)}
+                    onNextMonth={() => shiftEventCalendar(1)}
+                  />
+                  {eventSelectedDate && (
+                    <button
+                      type="button"
+                      className="event-calendar-modal__clear"
+                      onClick={() => {
+                        setEventSelectedDate(null);
+                        setIsCalendarOpen(false);
+                      }}
+                    >
+                      Clear date filter
+                    </button>
+                  )}
+                </div>
+              </div>,
+              document.body
+            )}
+
+            <div className="event-list">
+              {filteredEvents.length === 0 ? (
+                <p className="event-empty">No events match the current filters.</p>
+              ) : (
+                filteredEvents.map((event) => (
+                  <div key={event.id} className="event-card">
+                    <div className="event-card__header">
+                      <span className={`event-card__category event-card__category--${event.category}`}>
+                        {EVENT_CATEGORY_LABELS[event.category]}
+                      </span>
+                      <h3 className="event-card__title">{event.title}</h3>
+                    </div>
+                    <div className="event-card__meta">
+                      <span className="event-card__meta-row">
+                        <svg className="event-card__meta-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fillRule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clipRule="evenodd" />
+                        </svg>
+                        {event.date}
+                      </span>
+                      <span className="event-card__meta-row">
+                        <svg className="event-card__meta-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clipRule="evenodd" />
+                        </svg>
+                        {event.time}
+                      </span>
+                      <span className="event-card__meta-row">
+                        <svg className="event-card__meta-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fillRule="evenodd" d="m9.69 18.933.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 0 0 .281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 1 0 3 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 0 0 2.273 1.765 11.842 11.842 0 0 0 .976.544l.062.029.018.008.006.003ZM10 11.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" clipRule="evenodd" />
+                        </svg>
+                        {event.location}
+                      </span>
+                    </div>
+                    <p className="event-card__description">{event.description}</p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}
@@ -797,9 +1166,75 @@ export function PrayerTimes({
         {activeTab === "restaurants" && (
           <div className="tab-content restaurant-view">
             <p className="dummy-data-notice">⚠️ Restaurants listed are sample data and may not reflect current halal status or hours.</p>
+            <div className="event-controls">
+              <div className="event-controls__row">
+                <label className="event-select">
+                  <span className="event-select__label">Sort</span>
+                  <select
+                    value={restaurantSort}
+                    onChange={(e) => setRestaurantSort(e.target.value as "name" | "distance")}
+                  >
+                    <option value="name">Name (A-Z)</option>
+                    <option value="distance" disabled={!userLocation}>Closest First</option>
+                  </select>
+                </label>
+
+                <label className="event-select">
+                  <span className="event-select__label">Cuisine</span>
+                  <select
+                    value={restaurantCuisineFilter}
+                    onChange={(e) => setRestaurantCuisineFilter(e.target.value)}
+                  >
+                    <option value="">All Cuisines</option>
+                    {Array.from(new Set(STATIC_RESTAURANT_INFO.map(r => r.cuisine))).sort().map(c => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <div className="event-calendar-btn-group">
+                  <button
+                    type="button"
+                    className={`event-calendar-btn${userLocation ? " event-calendar-btn--active" : ""}`}
+                    onClick={handleRestaurantFindClosest}
+                    disabled={restaurantLocateStatus === "loading"}
+                  >
+                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" width="16" height="16">
+                      <path fillRule="evenodd" d="m9.69 18.933.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 0 0 .281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 1 0 3 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 0 0 2.273 1.765 11.842 11.842 0 0 0 .976.544l.062.029.018.008.006.003ZM10 11.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" clipRule="evenodd" />
+                    </svg>
+                    {restaurantLocateStatus === "loading"
+                      ? "Locating..."
+                      : restaurantLocateStatus === "denied" || restaurantLocateStatus === "unavailable"
+                      ? "Location Unavailable"
+                      : userLocation
+                      ? "Location Found"
+                      : "Find closest"}
+                  </button>
+                  {userLocation && (
+                    <button
+                      type="button"
+                      className="event-calendar-clear-btn"
+                      onClick={() => {
+                        setUserLocation(null);
+                        setRestaurantLocateStatus("idle");
+                        if (restaurantSort === "distance") setRestaurantSort("name");
+                      }}
+                      title="Clear location"
+                      aria-label="Clear location"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
             <div className="restaurant-list">
-              {filteredRestaurants.map((r) => (
-                <div key={r.id} className="restaurant-card">
+              {filteredRestaurants.length === 0 ? (
+                <p className="event-empty" style={{ gridColumn: "1 / -1" }}>No restaurants match your filters.</p>
+              ) : (
+                filteredRestaurants.map((r) => (
+                  <div key={r.id} className="restaurant-card">
                   <div className="restaurant-card__image-container">
                     <img src={r.image} alt={r.name} className="restaurant-card__image" loading="lazy" />
                   </div>
@@ -813,17 +1248,46 @@ export function PrayerTimes({
                     </div>
                   </div>
                 </div>
-              ))}
+              ))
+            )}
             </div>
           </div>
         )}
 
         {activeTab === "about" && (
-          <div className="empty-state">
-            <p>
-              TampaMuslim.com makes it easy to keep up with prayer timings and happenings
-              across the local community.
+          <div className="about-content" style={{ padding: "0.5rem" }}>
+            <p className="about-intro">
+              <strong>TampaMuslim.com</strong> is your unified hub for connecting with the Tampa Bay Muslim community.
             </p>
+            <div className="about-grid">
+              <div className="about-card">
+                <div className="about-card__header">
+                  <span className="about-card__icon" aria-hidden="true">📍</span>
+                  <h3 className="about-card__title">Prayer Times</h3>
+                </div>
+                <p className="about-card__text">
+                  Find real-time Iqamah and Jumuah times backed dynamically by community-maintained sources, and effortlessly discover the closest masjids via your location.
+                </p>
+              </div>
+              <div className="about-card">
+                <div className="about-card__header">
+                  <span className="about-card__icon" aria-hidden="true">🗓️</span>
+                  <h3 className="about-card__title">Community Events</h3>
+                </div>
+                <p className="about-card__text">
+                  Stay updated with our comprehensive calendar of halaqas, youth activities, fundraisers, and social gatherings.
+                </p>
+              </div>
+              <div className="about-card">
+                <div className="about-card__header">
+                  <span className="about-card__icon" aria-hidden="true">🍔</span>
+                  <h3 className="about-card__title">Halal Restaurants</h3>
+                </div>
+                <p className="about-card__text">
+                  Explore our curated directory of local halal dining options, sortable by distance to satisfy any craving.
+                </p>
+              </div>
+            </div>
           </div>
         )}
         </div>
