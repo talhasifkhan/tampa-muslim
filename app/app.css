@@ -1118,6 +1118,7 @@ body {
   }
 
   .event-list,
+  .event-view .event-controls,
   .dummy-data-notice,
   .restaurant-view {
     max-width: 720px;
