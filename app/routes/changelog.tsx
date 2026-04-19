@@ -15,6 +15,18 @@ type ChangeEntry = {
 
 const CHANGELOG: ChangeEntry[] = [
   {
+    date: "April 19, 2026",
+    title: "Find Closest & layout consistency improvements",
+    items: [
+      "Find Closest button on Prayer Times moved to its own full-width row below the search bar, matching the Restaurants tab layout",
+      "Find Closest button now uses a map pin icon (red) with green accent styling; darkens when location is found",
+      "Restaurants Find Closest button updated to match the same styling as the Prayer Times button",
+      "About page content now constrained to the same 720px max-width as Events and Restaurants on desktop",
+      "Events sorting and filtering controls now match the width of event cards on desktop",
+      "Fixed restaurant warning notice and sorting controls stretching wider than cards on desktop",
+    ],
+  },
+  {
     date: "April 18, 2026",
     title: "UI polish, animations & typography refines",
     items: [
